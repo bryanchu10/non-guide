@@ -50,11 +50,10 @@ export default {
     CouponCodeModal,
   },
   methods: {
-    subscribe(values, { resetForm }) {
+    subscribe({ resetForm }) {
       // 這邊假裝 API 有這個功能
       // 傳送用戶填寫的電子郵箱地址到後端
       // 後端傳送管理員設定的獎勵折扣碼
-      console.log(values);
       this.coupon = { title: '拜託了幫我折 10 %', code: 'C8763' };
       this.$refs.couponCodeModal.showModal();
       resetForm();

@@ -152,7 +152,6 @@ export default {
   },
   watch: {
     order() {
-      console.log(this.order);
       this.tempOrder = JSON.parse(JSON.stringify(this.order));
       this.isoCreate_at_date = this.$dayjs.unix(this.tempOrder.create_at).tz('Asia/Taipei').format('YYYY-MM-DD');
       this.isoCreate_at_time = this.$dayjs.unix(this.tempOrder.create_at).tz('Asia/Taipei').format('HH:mm:ss');

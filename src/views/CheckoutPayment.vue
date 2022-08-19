@@ -112,9 +112,7 @@ export default {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/pay/${this.$route.params.orderId}`;
       this.$http.post(api)
         .then((res) => {
-          console.log(res);
           if (res.data.success) {
-            console.log(res.data.message);
             this.$router.push(`/success/${this.$route.params.orderId}`);
           }
         });
