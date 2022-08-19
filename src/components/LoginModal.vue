@@ -76,13 +76,11 @@ export default {
           if (res.data.success) {
             this.isLoading = false;
             const { token, expired } = res.data;
-            console.log(res.data);
             document.cookie = `hexVue3CourseApiToken=${token}; expires=${new Date(expired)}`;
             this.hideModal();
             this.$router.push('/admin/products');
           } else {
             this.isLoading = false;
-            console.log(res.data.message);
           }
         });
     },

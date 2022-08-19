@@ -89,7 +89,6 @@ export default {
             this.receiverInfo = { ...res.data.order.user };
             if (res.data.order.message) {
               this.receiverMessage = res.data.order.message;
-              console.log(this.receiverMessage);
             }
           }
         });
@@ -100,7 +99,6 @@ export default {
   },
   watch: {
     $route() {
-      console.log('router');
       if (this.$route.name === 'info') {
         this.getCart();
       }
@@ -111,7 +109,6 @@ export default {
     },
   },
   created() {
-    console.log('created');
     if (this.$route.name === 'info') {
       this.getCart();
     }

@@ -119,9 +119,7 @@ export default {
   },
   watch: {
     product() {
-      console.log(this.product);
       this.tempProduct = JSON.parse(JSON.stringify(this.product));
-      console.log(this.tempProduct);
     },
   },
   data() {
@@ -134,7 +132,6 @@ export default {
   methods: {
     uploadFile() {
       this.isLoading = true;
-      console.log(this.$refs.fileInput);
       const uploadedFile = this.$refs.fileInput.files[0];
       const formData = new FormData();
       formData.append('file-to-upload', uploadedFile);
@@ -142,7 +139,6 @@ export default {
       this.$http.post(url, formData)
         .then((res) => {
           this.isLoading = false;
-          console.log(res);
           if (res.data.success) {
             this.tempProduct.imageUrl = res.data.imageUrl;
           }

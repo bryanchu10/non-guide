@@ -175,7 +175,6 @@ export default {
         });
     },
     getTown() {
-      console.log(this.county);
       const countyIndex = this.countyDataArr.findIndex((el) => el.countyname === this.county);
       if (countyIndex >= 0) {
         const countyCode = this.countyDataArr[countyIndex].countycode;
@@ -185,7 +184,6 @@ export default {
             if (res.status === 200) {
               const townData = JSON.parse(xml2json(parseXml(res.data), ''));
               this.townDataArr = townData.townItems.townItem;
-              console.log(this.townDataArr);
             }
           });
       }
@@ -194,14 +192,11 @@ export default {
       this.form.user.address = this.county + this.town + this.rawAddress;
     },
     submitOrder() {
-      console.log('submitOrder');
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`;
       const form = JSON.parse(JSON.stringify(this.form));
-      console.log(form);
       this.$http.post(api, { data: form })
         .then((res) => {
           if (res.data.success) {
-            console.log(res);
             this.$router.push(`/checkout/${res.data.orderId}`);
             // this.getCart();
           }

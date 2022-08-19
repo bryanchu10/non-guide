@@ -216,10 +216,8 @@ export default {
       };
       this.$http.post(api, { data: couponCode })
         .then((res) => {
-          console.log(res);
           this.status.loadingItem = '';
           if (res.data.success) {
-            console.log(res);
             this.couponMessage = '';
             this.getCart();
             return;

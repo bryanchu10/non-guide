@@ -204,7 +204,6 @@ export default {
     browserWidth() {
       if (this.browserWidth < 768) {
         this.infoCardHeight = this.$refs.infoCard.offsetHeight;
-        console.log(this.infoCardHeight);
       }
     },
   },

@@ -114,20 +114,16 @@ export default {
   },
   watch: {
     article() {
-      console.log(this.article);
       this.tempArticle = JSON.parse(JSON.stringify(this.article));
       this.isoCreate_at = this.$dayjs.unix(this.tempArticle.create_at).tz('Asia/Taipei').format('YYYY-MM-DD');
-      console.log(this.tempArticle);
     },
     isoCreate_at() {
       this.tempArticle.create_at = this.$dayjs(this.isoCreate_at).tz('Asia/Taipei').unix();
-      console.log(this.tempArticle.create_at);
     },
   },
   methods: {
     uploadFile() {
       this.isLoading = true;
-      console.log(this.$refs.fileInput);
       const uploadedFile = this.$refs.fileInput.files[0];
       const formData = new FormData();
       formData.append('file-to-upload', uploadedFile);
@@ -135,7 +131,6 @@ export default {
       this.$http.post(url, formData)
         .then((res) => {
           this.isLoading = false;
-          console.log(res);
           if (res.data.success) {
             this.tempArticle.image = res.data.imageUrl;
           }

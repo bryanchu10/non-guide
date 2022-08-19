@@ -85,9 +85,7 @@ export default {
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
-            console.log(res.data);
             this.coupons = JSON.parse(JSON.stringify(res.data.coupons));
-            console.log(this.coupons);
             this.pagination = { ...res.data.pagination };
           }
         });
@@ -116,7 +114,6 @@ export default {
       }
       this.$http[httpMethod](api, { data: this.tempCoupon })
         .then((res) => {
-          console.log(res);
           this.$refs.couponUpdateModal.hideModal();
           this.getCoupons();
           this.pushMessageState(res, '更新');
@@ -124,7 +121,6 @@ export default {
     },
     openDelModal(coupon) {
       this.tempCoupon = JSON.parse(JSON.stringify(coupon));
-      console.log(coupon);
       this.$refs.delModal.showModal();
     },
     delCoupon(coupon) {
@@ -132,7 +128,6 @@ export default {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon/${coupon.id}`;
       this.$http.delete(api, { data: this.tempCoupon })
         .then((res) => {
-          console.log(res);
           this.$refs.delModal.hideModal();
           this.getCoupons();
           this.pushMessageState(res, '刪除');

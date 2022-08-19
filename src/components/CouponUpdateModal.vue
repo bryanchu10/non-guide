@@ -108,7 +108,6 @@ export default {
   },
   watch: {
     coupon() {
-      console.log(this.coupon);
       this.tempCoupon = JSON.parse(JSON.stringify(this.coupon));
       if (this.tempCoupon.due_date || this.isoDue_date_date) {
         this.isoDue_date_date = this.$dayjs.unix(this.tempCoupon.due_date).tz('Asia/Taipei').format('YYYY-MM-DD');
@@ -118,14 +117,12 @@ export default {
       }
     },
     timeToBackend() {
-      console.log('timeTo');
       this.tempCoupon.due_date = this.timeToBackend;
     },
   },
   methods: {
     uploadFile() {
       this.isLoading = true;
-      console.log(this.$refs.fileInput);
       const uploadedFile = this.$refs.fileInput.files[0];
       const formData = new FormData();
       formData.append('file-to-upload', uploadedFile);
@@ -133,7 +130,6 @@ export default {
       this.$http.post(url, formData)
         .then((res) => {
           this.isLoading = false;
-          console.log(res);
           if (res.data.success) {
             this.tempCoupon.imageUrl = res.data.imageUrl;
           }

@@ -83,7 +83,6 @@ export default {
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
-            console.log(res.data);
             this.articles = JSON.parse(JSON.stringify(res.data.articles));
             this.pagination = { ...res.data.pagination };
           }
@@ -122,7 +121,6 @@ export default {
       }
       this.$http[httpMethod](api, { data: this.tempArticle })
         .then((res) => {
-          console.log(res);
           this.$refs.articleUpdateModal.hideModal();
           this.getArticles();
           this.pushMessageState(res, '更新');
@@ -137,7 +135,6 @@ export default {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${article.id}`;
       this.$http.delete(api, { data: this.tempArticle })
         .then((res) => {
-          console.log(res);
           this.$refs.delModal.hideModal();
           this.getArticles();
           this.pushMessageState(res, '刪除');

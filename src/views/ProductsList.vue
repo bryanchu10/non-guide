@@ -197,7 +197,6 @@ export default {
             this.areas[5].amount += 1;
             break;
           default:
-            console.log(`${product} 沒有分類`);
         }
       });
     },
