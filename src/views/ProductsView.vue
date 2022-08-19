@@ -1,7 +1,7 @@
 <template>
   <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()" :key="pageKey"/>
-  <router-view :parent-articles-data="articlesData"
-                v-if="articlesDataGotten"
+  <router-view v-if="productsDataGotten"
+                :parent-products-data="productsData"
                 :key="pageKey"/>
   <SubscribeMe/>
   <UserFooter/>
@@ -15,7 +15,7 @@ import UserFooter from '@/components/UserFooter.vue';
 import CartOffcanvas from '@/components/CartOffcanvas.vue';
 
 export default {
-  name: 'AboutView',
+  name: 'ProductsView',
   components: {
     UserNavbar,
     SubscribeMe,
@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      articlesData: [],
-      articlesDataGotten: false,
+      productsData: [],
+      productsDataGotten: false,
     };
   },
   computed: {
@@ -35,22 +35,23 @@ export default {
     },
   },
   methods: {
-    getRecentArticles(page = 1) {
-      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/articles?page=${page}`;
+    getProducts() {
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http.get(api)
         .then((res) => {
           if (res.data.success) {
-            this.articlesData = [...res.data.articles];
-            this.articlesDataGotten = true;
+            this.productsData = JSON.parse(JSON.stringify(res.data.products));
+            this.productsDataGotten = true;
           }
         });
     },
   },
   created() {
-    this.getRecentArticles();
+    this.getProducts();
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .navbar {
   background-color: #ffffff;
