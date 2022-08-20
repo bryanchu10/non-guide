@@ -16,7 +16,7 @@
             <div class="col-md-8">
               <div class="p-3 p-md-0">
                 <h5 class="card-title link-dark fw-bold mb-3">{{ article.title }}</h5>
-                <p class="card-text link-secondary">{{ article.description }}</p>
+                <p class="card-text link-secondary text-prewrap">{{ article.description }}</p>
               </div>
             </div>
           </div>

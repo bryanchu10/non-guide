@@ -525,6 +525,7 @@ $utilities: map-merge(
       values: (
         wrap: normal,
         nowrap: nowrap,
+        prewrap: pre-wrap, // custom
       )
     ),
     "word-wrap": (

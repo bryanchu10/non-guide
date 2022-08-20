@@ -44,7 +44,7 @@
         </div>
         <div class="col-md-4 offset-md-1 d-flex flex-column justify-content-center py-3">
           <h3 class="fs-4 fw-bold mb-3">{{ article.title }}</h3>
-          <p class="text-secondary mb-3">{{ article.description }}</p>
+          <p class="text-secondary text-prewrap mb-3">{{ article.description }}</p>
           <a class="link-primary fw-bold text-decoration-none align-self-start
                     py-2" href="#"
               @click.prevent="this.$router.push(`/about/${article.id}`)">

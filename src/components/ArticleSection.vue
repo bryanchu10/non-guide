@@ -36,7 +36,7 @@
                 </ol>
               </nav>
               <h2 class="fs-2 fs-md-1 fw-bold lh-base mb-4">{{ mainArticle.title }}</h2>
-              <p class="text-secondary mb-0">
+              <p class="text-secondary text-prewrap mb-0">
                 {{ mainArticle.description }}
               </p>
             </div>
@@ -46,7 +46,7 @@
     </div>
     <div class="row justify-content-center">
       <div class="col-md-8 zindex-1">
-        <p class="bg-white-80 p-4 mb-0 shadow-none shadow-md rounded-1">
+        <p class="text-prewrap bg-white-80 p-4 mb-0 shadow-none shadow-md rounded-1">
           {{ mainArticle.content }}
         </p>
       </div>
