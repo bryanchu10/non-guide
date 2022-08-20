@@ -15,7 +15,7 @@
         <div class="col-xl-2 d-flex justify-content-xl-end">
           <button class="btn btn-link link-secondary text-decoration-none
                           align-self-end ps-0 py-2"
-                  @click="$emit('showModal')">
+                  @click="$emit('showLoginModal')">
             <i class="bi bi-person-circle me-2"></i>
             <span class="fw-bold">管理員登入</span>
           </button>

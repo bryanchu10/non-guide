@@ -98,7 +98,7 @@
                     :parent-products-data="productsData"
                     v-if="productsDataGotten"/>
   <SubscribeMe/>
-  <UserFooter @show-modal="this.$refs.loginModal.showModal()"/>
+  <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
   <CartOffcanvas ref="cartOffcanvas"/>
   <LoginModal ref="loginModal"/>
 </template>
