@@ -1,26 +1,26 @@
 <template>
   <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
-  <!-- banner -->
-  <section class="banner container-fluid vh-100 position-relative mb-5 mb-lg-6">
+
+  <section class="banner container-fluid vh-100 mb-5 mb-lg-6 position-relative">
     <div class="container h-100">
       <div class="row h-100">
         <div class="col-lg-6 d-flex flex-column align-items-sm-center align-items-lg-start
                     justify-content-between justify-content-lg-center py-4">
           <div class="d-lg-none py-4"></div>
-          <div class="mb-5 align-self-center align-self-lg-start">
-            <h2 class="text-md-start text-white text-lg-black fw-bold fs-1 mb-4">
+          <div class="align-self-center align-self-lg-start mb-5">
+            <h2 class="fs-1 fw-bold text-white text-lg-black text-md-start mb-4">
               世界的每個角落<br>
               ——— 都是一本<br class="d- d-xl-none">博物誌。
             </h2>
-            <p class="text-light text-lg-secondary fw-lg-bold fs-lg-4
+            <p class="fs-lg-4 fw-lg-bold text-light text-lg-secondary
                       text-center text-lg-start mb-0">
               最獨特的旅行指南，帶你認識街上<br>
               一道牆、一棵樹的故事。
             </p>
           </div>
           <div class="col-12 col-sm-8 col-md-6">
-            <button class="btn btn-primary btn-lg w-100" type="button"
-                    @click.prevent="this.$router.push('/products/list')">
+            <button class="btn btn-lg btn-primary w-100" type="button"
+                    @click="this.$router.push('/products/list')">
               開啟旅程
             </button>
           </div>
@@ -28,14 +28,14 @@
       </div>
     </div>
     <div class="row justify-content-end">
-      <div class="col-lg-6 position-absolute top-0 bottom-0 bgp-center bgsz-cover zindex-n1"
+      <div class="col-lg-6 bgp-center bgsz-cover top-0 bottom-0 zindex-n1 position-absolute"
             style="background-image: url(https://images.unsplash.com/photo-1589823032775-1affcb1d5bef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1372&q=80);">
       </div>
       <div class="d-lg-none bg-black bg-opacity-25
                   position-absolute top-0 bottom-0 zindex-n1"></div>
     </div>
   </section>
-  <!-- about -->
+
   <section class="about container mb-4 mb-md-6">
     <template  v-for="(article, index) in recentArticles" :key="article.id">
       <div class="row mb-2" :class="[index === (recentArticlesNum - 1) ? '' : 'mb-md-4']">
