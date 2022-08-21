@@ -1,5 +1,5 @@
 <template>
-  <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()" :key="pageKey"/>
+  <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
   <router-view v-if="productsDataGotten"
                 :parent-products-data="productsData"
                 :key="pageKey"/>

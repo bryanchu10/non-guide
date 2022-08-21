@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal';
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   data() {
@@ -32,22 +32,16 @@ export default {
     };
   },
   methods: {
-    showModal() {
-      this.modal.show();
-    },
-    hideModal() {
-      this.modal.hide();
-    },
     hideModalHandler() {
       this.$router.push('/products/list');
     },
   },
   mounted() {
-    this.modal = new Modal(this.$refs.modal);
     this.$refs.modal.addEventListener('hide.bs.modal', this.hideModalHandler);
   },
   beforeUnmount() {
     this.$refs.modal.removeEventListener('hide.bs.modal', this.hideModalHandler);
   },
+  mixins: [modalMixin],
 };
 </script>

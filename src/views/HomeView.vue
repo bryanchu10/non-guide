@@ -32,21 +32,23 @@
             style="background-image: url(https://images.unsplash.com/photo-1589823032775-1affcb1d5bef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1372&q=80);">
       </div>
       <div class="d-lg-none bg-black bg-opacity-25
-                  position-absolute top-0 bottom-0 zindex-n1"></div>
+                  top-0 bottom-0 zindex-n1 position-absolute"></div>
     </div>
   </section>
 
-  <section class="about container mb-4 mb-md-6">
+  <section class="about container mb-4 mb-md-6 position-relative">
+    <VueLoading :active="isLoading" :is-full-page="false"/>
     <template  v-for="(article, index) in recentArticles" :key="article.id">
       <div class="row mb-2" :class="[index === (recentArticlesNum - 1) ? '' : 'mb-md-4']">
         <div class="col-md-6" :class="[index%2 === 0 ? '' : 'order-md-1 offset-md-1']">
-          <img class="w-100 ojf-cover rounded-1" :src="article.image" :alt="article.title">
+          <img class="h-lv1 h-md-lv2 w-100 ojf-cover rounded-1"
+                :src="article.image" :alt="article.title">
         </div>
         <div class="col-md-4 offset-md-1 d-flex flex-column justify-content-center py-3">
           <h3 class="fs-4 fw-bold mb-3">{{ article.title }}</h3>
           <p class="text-secondary text-prewrap mb-3">{{ article.description }}</p>
-          <a class="link-primary fw-bold text-decoration-none align-self-start
-                    py-2" href="#"
+          <a href="#"
+              class="link-primary fw-bold text-decoration-none align-self-start py-2"
               @click.prevent="this.$router.push(`/about/${article.id}`)">
             了解更多
           </a>
@@ -54,12 +56,13 @@
       </div>
     </template>
   </section>
-  <!-- quotation -->
-  <section class="quotation bgpx-center bgpy-75 bgsz-cover" style="background-image: url(https://images.unsplash.com/photo-1498760232600-92f65c153b44?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80);">
+
+  <section class="quotation bgsz-cover bgpx-center bgpy-75"
+            style="background-image: url(https://images.unsplash.com/photo-1498760232600-92f65c153b44?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80);">
     <div class="container">
-      <div class="row justify-content-between py-4 py-md-8 align">
+      <div class="row justify-content-between py-4 py-md-8">
         <div class="col-md-4">
-          <blockquote class="custom-blockquote text-white fs-2 fw-bold mb-md-0 mb-7">
+          <blockquote class="custom-blockquote fs-2 fw-bold text-white mb-7 mb-md-0">
             看似微不足道的小資訊，卻使我們看待事物的眼光有所不同。
           </blockquote>
         </div>
@@ -70,22 +73,20 @@
             <template #final>No such person</template>
           </MeltTransText>
           <Transition name="custom-classes"
-            enter-active-class="animate__animated animate__fadeOut">
+                      enter-active-class="animate__animated animate__fadeOut">
             <button v-if="!wordChanged"
                     type="button"
-                    class="link-primary align-self-start
-                            bg-transparent border-0 p-0
-                            fw-bold"
+                    class="link-primary fw-bold bg-transparent border-0
+                            align-self-start p-0"
                     @click="changeWords">
-                    Github
+              Github
             </button>
           </Transition>
           <Transition name="custom-classes"
-            enter-active-class="animate__animated animate__fadeIn animate__delay-2s">
+                      enter-active-class="animate__animated animate__fadeIn animate__delay-2s">
             <a v-if="wordChanged"
-                class="link-primary align-self-start
-                      bg-transparent border-0 p-0
-                      fw-bold text-decoration-none"
+                class="link-primary fw-bold text-decoration-none bg-transparent border-0
+                        align-self-start p-0"
                 href="https://github.com/bryanchu10">
               改去 Bryan Chu 的 Github 吧！
             </a>
@@ -94,11 +95,19 @@
       </div>
     </div>
   </section>
-  <ProductRecommend class="py-5 py-md-6"
-                    :parent-products-data="productsData"
-                    v-if="productsDataGotten"/>
+
+  <section class="recommend position-relative"
+            :class="{ 'py-7': !productsDataGotten}">
+    <VueLoading :active="!productsDataGotten" :is-full-page="false"/>
+    <ProductRecommend class="py-5 py-md-6"
+                      :parent-products-data="productsData"
+                      v-if="productsDataGotten"/>
+  </section>
+
   <SubscribeMe/>
+
   <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
+
   <CartOffcanvas ref="cartOffcanvas"/>
   <LoginModal ref="loginModal"/>
 </template>
@@ -116,12 +125,13 @@ export default {
   name: 'HomeView',
   data() {
     return {
-      articlesData: [],
       recentArticlesNum: 3, // 調整首頁顯示的近期文章數量
+      articlesData: [],
       recentArticles: [],
       wordChanged: false,
       productsData: [],
       productsDataGotten: false,
+      isLoading: false,
     };
   },
   components: {
@@ -135,9 +145,11 @@ export default {
   },
   methods: {
     getRecentArticles(page = 1) {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/articles?page=${page}`;
       this.$http.get(api)
         .then((res) => {
+          this.isLoading = false;
           if (res.data.success) {
             this.articlesData = [...res.data.articles];
             this.recentArticles = this.articlesData.slice(0, this.recentArticlesNum);
@@ -145,6 +157,7 @@ export default {
         });
     },
     getProducts() {
+      this.productsDataGotten = false;
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http.get(api)
         .then((res) => {
@@ -162,48 +175,5 @@ export default {
     this.getRecentArticles();
     this.getProducts();
   },
-  mounted() {
-  },
 };
 </script>
-
-<style lang="scss" scoped>
-.navbar {
-  position: absolute;
-  :deep(.navbar-brand) {
-    color: #ffffff;
-    @media (min-width: 992px) {
-      color: #000000;
-    }
-  }
-  :deep(.nav-link) {
-    @media (min-width: 992px) {
-      color: #ffffff;
-      &:hover {
-        color: rgba(#ffffff, .75);
-      }
-    }
-  }
-  :deep(.cart) {
-    color: #ffffff;
-    &:hover {
-      color: rgba(#ffffff, .75);
-    }
-  }
-  :deep(.navbar-toggler) {
-    color: #ffffff;
-    &:hover {
-      color: rgba(#ffffff, .75);
-    }
-  }
-}
-
-.about {
-  img {
-    height: 244px;
-    @media (min-width: 992px) {
-      height: 400px;
-    }
-  }
-}
-</style>

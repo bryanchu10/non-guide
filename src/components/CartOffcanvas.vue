@@ -249,6 +249,7 @@ export default {
     this.$refs.offcanvas.addEventListener('hide.bs.offcanvas', this.hideOffcanvasHandler);
   },
   beforeUnmount() {
+    this.hideOffcanvas();
     this.$emitter.off('addCart', this.addCartHandler);
     this.$refs.offcanvas.removeEventListener('hide.bs.offcanvas', this.hideOffcanvasHandler);
   },

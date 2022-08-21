@@ -12,4 +12,7 @@ export default {
   mounted() {
     this.modal = new Modal(this.$refs.modal);
   },
+  beforeUnmount() {
+    this.hideModal();
+  },
 };
