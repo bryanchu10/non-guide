@@ -9,13 +9,13 @@
             </h2>
           </router-link>
           <p class="text-secondary fw-bold mb-0 ms-3 pb-2">
-            © 2022. 版面設計修改自六角學院授權設計稿，圖片來自於 Unsplash 上的創作者，「出版品」與「關於」內文由唬爛產生器產生。此網站為個人作品展示，非商業使用。
+            © 2022. 版面設計修改自六角學院授權設計稿，圖片來自於 Unsplash 上的創作者。此網站為個人作品展示，非商業使用。
           </p>
         </div>
         <div class="col-xl-2 d-flex justify-content-xl-end">
           <button class="btn btn-link link-secondary text-decoration-none
                           align-self-end ps-0 py-2"
-                  @click="$emit('showModal')">
+                  @click="$emit('showLoginModal')">
             <i class="bi bi-person-circle me-2"></i>
             <span class="fw-bold">管理員登入</span>
           </button>

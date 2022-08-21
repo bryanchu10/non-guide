@@ -22,7 +22,7 @@ import timezone from 'dayjs/plugin/timezone';
 import App from './App.vue';
 import router from './router';
 import emitter from './methods/emitter';
-import { currency, date } from './methods/filters';
+import currency from './methods/filters';
 
 defineRule('required', required);
 defineRule('email', email);
@@ -42,7 +42,7 @@ const app = createApp(App);
 app.use(VueAxios, axios);
 app.use(router);
 app.provide('$emitter', emitter);
-app.provide('$filters', { currency, date });
+app.provide('$filters', { currency });
 app.provide('$dayjs', dayjs);
 app.component('VueLoading', Loading);
 app.component('VeeForm', Form);

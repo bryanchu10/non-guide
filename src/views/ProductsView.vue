@@ -1,11 +1,12 @@
 <template>
-  <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()" :key="pageKey"/>
+  <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
   <router-view v-if="productsDataGotten"
                 :parent-products-data="productsData"
                 :key="pageKey"/>
   <SubscribeMe/>
-  <UserFooter/>
+  <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
   <CartOffcanvas ref="cartOffcanvas"/>
+  <LoginModal ref="loginModal"/>
 </template>
 
 <script>
@@ -13,6 +14,7 @@ import UserNavbar from '@/components/UserNavbar.vue';
 import SubscribeMe from '@/components/SubscribeMe.vue';
 import UserFooter from '@/components/UserFooter.vue';
 import CartOffcanvas from '@/components/CartOffcanvas.vue';
+import LoginModal from '@/components/LoginModal.vue';
 
 export default {
   name: 'ProductsView',
@@ -21,6 +23,7 @@ export default {
     SubscribeMe,
     UserFooter,
     CartOffcanvas,
+    LoginModal,
   },
   data() {
     return {

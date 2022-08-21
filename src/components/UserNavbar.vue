@@ -1,15 +1,19 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top py-3">
+  <nav class="navbar navbar-expand-lg w-100 py-3"
+        :class="[$route.name === 'home' ? 'position-absolute zindex-1' : 'fixed-top']">
     <div class="container align-items-center">
-      <button class="navbar-toggler fs-3 border-0 ps-0 ms-1" type="button"
+      <button class="navbar-toggler fs-3 border-0 ps-0 ms-1"
+              :class="{'link-light': $route.name === 'home'}"
+              type="button"
               data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
               aria-controls="offcanvasNavbar">
         <i class="bi bi-list"></i>
       </button>
-      <router-link class="navbar-brand py-0" to="/">
+      <router-link class="navbar-brand py-0" to="/"
+                    :class="{'text-light text-md-dark': $route.name === 'home'}">
         <h1 class="fs-4 fw-bold lh-base mb-0">烏有指南</h1>
       </router-link>
-      <div class="offcanvas offcanvas-start" tabindex="-1"
+      <div class="offcanvas offcanvas-start" tabindex="-1" ref="menuOffcanvas"
             id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header py-3">
           <a class="link-dark fs-4" data-bs-dismiss="offcanvas"
@@ -51,22 +55,30 @@
               </div>
             </li>
             <li class="nav-item d-none d-lg-flex px-3">
-              <!-- 因為單一產品、單一商品頁面和「出版品」、「關於」的 router-link 路由不同，
-                    並且因為設計的原因，單一產品、單一商品頁面的子路由不在「出版品」、「關於」的路由之下，
-                    但要讓使用者在瀏覽畫面時「以為」單一產品、單一商品頁面在「出版品」、「關於」的頁面下層，
+              <!-- 因為單一出版品、單一關於文章的路徑和出版品總覽、關於文章總覽的路徑不同，
+                    並且因為設計的原因，單一頁面並不是總覽的子路由，
+                    但要讓使用者以為單一頁面是在總覽頁面下層，
                     所以在 Vue Router 提供的 linkActiveClass 功能之外，
-                    再額外寫上需要呈現 active 的資料狀態。-->
+                    再額外寫上需要呈現 active 樣式的情況。-->
               <router-link class="nav-link" to="/products/list"
-                          :class="{'active fw-bold': onSingleProduct}">出版品</router-link>
+                          :class="{'active fw-bold': $route.name === 'product',
+                                    'text-md-light': $route.name === 'home'}">
+                出版品
+              </router-link>
             </li>
             <li class="nav-item px-lg-3">
               <router-link class="nav-link" to="/about/overview"
-                          :class="{'active fw-bold': onSingleArticle}">關於</router-link>
+                          :class="{'active fw-bold': $route.name === 'article',
+                                    'text-md-light': $route.name === 'home'}">
+                關於
+              </router-link>
             </li>
           </ul>
         </div>
       </div>
-      <a class="cart nav-link fs-4 ms-lg-4 me-1 position-relative" href="#" aria-label="cart"
+      <a href="#" aria-label="cart"
+          class="cart nav-link fs-4 ms-lg-4 me-1 position-relative"
+          :class="{'link-light': $route.name === 'home'}"
           @click.prevent="$emit('show-offcanvas')">
         <i class="bi bi-cart-fill"></i>
         <span v-if="cartFilled"
@@ -76,10 +88,13 @@
         </span>
       </a>
     </div>
+    <!-- <button @click="this.$refs.menuOffcanvas.hide()">測試</button> -->
   </nav>
 </template>
 
 <script>
+import Offcanvas from 'bootstrap/js/dist/offcanvas';
+
 export default {
   inject: ['$emitter'],
   data() {
@@ -89,6 +104,7 @@ export default {
       onSingleProduct: false,
       onSingleArticle: false,
       cartFilled: false,
+      offcanvas: {},
     };
   },
   methods: {
@@ -118,18 +134,20 @@ export default {
         this.areaSelected = this.$route.params.areaThroughRouter;
       }
     }
-    if (this.$route.name === 'product') {
-      this.onSingleProduct = true;
-    }
-    if (this.$route.name === 'article') {
-      this.onSingleArticle = true;
-    }
+    // if (this.$route.name === 'product') {
+    //   this.onSingleProduct = true;
+    // }
+    // if (this.$route.name === 'article') {
+    //   this.onSingleArticle = true;
+    // }
   },
   mounted() {
+    this.offcanvas = new Offcanvas(this.$refs.menuOffcanvas);
     this.$emitter.on('areaFromList', this.areaFromListHandler);
     this.$emitter.on('cartFilled', this.cartFilledHandler);
   },
   beforeUnmount() {
+    this.offcanvas.hide();
     this.$emitter.off('areaFromList', this.areaFromListHandler);
     this.$emitter.off('cartFilled', this.cartFilledHandler);
   },

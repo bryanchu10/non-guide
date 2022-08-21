@@ -196,8 +196,12 @@ $utilities: map-merge(
     ),
     "height": (
       property: height,
+      responsive: true,
       class: h,
       values: (
+        0: 0, // custom
+        lv1: 244px, //custom
+        lv2: 400px, //custom
         25: 25%,
         50: 50%,
         75: 75%,
@@ -525,6 +529,7 @@ $utilities: map-merge(
       values: (
         wrap: normal,
         nowrap: nowrap,
+        prewrap: pre-wrap, // custom
       )
     ),
     "word-wrap": (

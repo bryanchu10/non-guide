@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal';
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   data() {
@@ -84,20 +84,7 @@ export default {
           }
         });
     },
-    showModal() {
-      this.modal.show();
-    },
-    hideModal() {
-      this.modal.hide();
-    },
-    hideModalHandler() {
-      this.$router.push('/products/list');
-    },
   },
-  mounted() {
-    this.modal = new Modal(this.$refs.modal);
-  },
-  beforeUnmount() {
-  },
+  mixins: [modalMixin],
 };
 </script>

@@ -96,12 +96,12 @@
     </div>
     <div class="row">
       <div class="col-md-5 mb-4 mb-md-0">
-        <p class="fs-md-5 mb-0">
+        <p class="fs-md-5 mb-0 text-prewrap">
           {{ product.content }}
         </p>
       </div>
       <div class="col-md-3">
-        <p class="fs-md-5 mb-0 text-secondary">
+        <p class="fs-md-5 mb-0 text-secondary text-prewrap">
           {{ product.description }}
         </p>
       </div>
