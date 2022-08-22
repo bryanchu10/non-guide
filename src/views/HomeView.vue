@@ -41,7 +41,7 @@
     <template  v-for="(article, index) in recentArticles" :key="article.id">
       <div class="row mb-2" :class="[index === (recentArticlesNum - 1) ? '' : 'mb-md-4']">
         <div class="col-md-6" :class="[index%2 === 0 ? '' : 'order-md-1 offset-md-1']">
-          <img class="h-lv1 h-md-lv2 w-100 ojf-cover rounded-1"
+          <img class="h-lv4 h-md-lv8 w-100 ojf-cover rounded-1"
                 :src="article.image" :alt="article.title">
         </div>
         <div class="col-md-4 offset-md-1 d-flex flex-column justify-content-center py-3">
@@ -113,13 +113,13 @@
 </template>
 
 <script>
-import UserNavbar from '@/components/UserNavbar.vue';
-import MeltTransText from '@/components/MeltTransText.vue';
-import ProductRecommend from '@/components/ProductRecommend.vue';
-import SubscribeMe from '@/components/SubscribeMe.vue';
-import UserFooter from '@/components/UserFooter.vue';
-import CartOffcanvas from '@/components/CartOffcanvas.vue';
-import LoginModal from '@/components/LoginModal.vue';
+import UserNavbar from '@/components/layouts/UserNavbar.vue';
+import MeltTransText from '@/components/helpers/MeltTransText.vue';
+import ProductRecommend from '@/components/layouts/ProductRecommend.vue';
+import SubscribeMe from '@/components/layouts/SubscribeMe.vue';
+import UserFooter from '@/components/layouts/UserFooter.vue';
+import CartOffcanvas from '@/components/layouts/CartOffcanvas.vue';
+import LoginModal from '@/components/modals/LoginModal.vue';
 
 export default {
   name: 'HomeView',
