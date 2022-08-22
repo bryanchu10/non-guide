@@ -1,8 +1,11 @@
 <template>
-  <nav class="navbar navbar-expand-md bg-light fixed-top"
-        :class="{'fixed-top--hide': isScrollUp}">
+  <nav class="navbar navbar-expand-md bg-light fixed-top fixed-top-animate"
+        :class="{'fixed-top-animate--hide': isScrollUp}">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="#">烏有指南</a>
+      <router-link class="navbar-brand d-flex align-items-center pe-3 pb-2" to="/">
+        <img class="me-2" src="@/assets/logo.svg" alt="logo" width="24" height="24">
+        <h1 class="fs-4 fw-bold mb-0">烏有指南</h1>
+      </router-link>
       <button class="navbar-toggler" type="button"
               data-bs-toggle="collapse" data-bs-target="#navbarNav"
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,13 +72,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.fixed-top{
-  transition: ease-out 0.2s;
-  &--hide{
-    top: -3.5rem;
-    transition: ease-out 0.2s;
-  }
-}
-</style>

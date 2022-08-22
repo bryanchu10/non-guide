@@ -1,0 +1,7 @@
+.fixed-top-animate{
+  transition: ease-out 0.2s;
+  &--hide{
+    top: -3.5rem;
+    transition: ease-out 0.2s;
+  }
+}
