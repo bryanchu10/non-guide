@@ -2,13 +2,13 @@
   <ArticleSection :parent-articles-data="parentArticlesData"/>
   <section class="container mb-5 mb-md-6">
     <h3 class="fs-2 fw-bold mb-4">接著閱讀……</h3>
-    <a href="#" class="card mb-3 mb-md-4 border-0 shadow-s text-decoration-none"
+    <a href="#" class="card mb-3 mb-md-4 border-0 shadow-s text-decoration-none hover-scale"
         v-for="article in otherArticles" :key="article.id"
         @click.prevent="goArticle(article.id)">
       <div class="row g-0">
         <div class="col-md-6">
           <img :src="article.image"
-                class="rounded-start w-100 ojf-cover"
+                class="rounded-start w-100 ojf-cover h-lv4"
                 alt="article.title">
         </div>
         <div class="col-md-6">
@@ -60,15 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.card {
-  transition: transform 0.5s;
-  &:hover {
-    transform: scale(1.1);
-  }
-  img {
-    height: 240px;
-  }
-}
-</style>

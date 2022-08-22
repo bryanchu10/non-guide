@@ -154,11 +154,6 @@ export default {
   components: {
     CartOffcanvas,
   },
-  computed: {
-    // addressCombined() {
-    //   return this.county + this.town + this.rawAddress;
-    // },
-  },
   methods: {
     isMobile(value) {
       const phoneNumber = /^(09)[0-9]{8}$/;
@@ -198,7 +193,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.$router.push(`/checkout/${res.data.orderId}`);
-            // this.getCart();
           }
         });
     },

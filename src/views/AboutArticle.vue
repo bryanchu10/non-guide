@@ -55,21 +55,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.navbar {
-  background-color: #ffffff;
-  :deep(.navbar-toggler) {
-    color: #000000;
-    &:hover {
-      color: rgba(#000000, .75);
-    }
-  }
-}
-
-.product-main-img {
-  height: 390px;
-  @media (min-width: 768px) {
-    height: 500px;
-  }
-}
-</style>

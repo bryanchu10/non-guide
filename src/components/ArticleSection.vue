@@ -2,12 +2,12 @@
   <section class="container mt-6 mb-4 mb-md-6">
     <div class="row position-relative mb-md-n6 "
           :style="{ 'margin-bottom': `${infoCardHeight - 48}px` }">
-      <div class="col d-md-none product-main-img bgsz-cover bgp-center"
+      <div class="col d-md-none h-lv8 bgsz-cover bgp-center"
           :style="{ 'background-image':
                     `url(${mainArticle.image ? mainArticle.image : ''})` }">
       </div>
       <div class="d-none d-md-block col-md-7 offset-md-1">
-          <img class="product-main-img w-100 ojf-cover rounded-1"
+          <img class="h-lv10 w-100 ojf-cover rounded-1"
                 :src="mainArticle.image" :alt="mainArticle.title">
       </div>
       <div class="col-md-5 position-absolute top-90 top-md-20 end-md-0">
@@ -116,12 +116,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.product-main-img {
-  height: 390px;
-  @media (min-width: 768px) {
-    height: 500px;
-  }
-}
-</style>

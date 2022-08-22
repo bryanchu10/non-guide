@@ -20,60 +20,62 @@
   </nav>
 
   <section class="container pt-4 pt-md-5 mb-4">
-    <div class="row gx-3 gx-md-4 align-items-md-start">
-      <template v-if="device === 'mobile'">
-        <div v-for="product in this.filterProducts" :key="product.id"
-              class="col-6">
-          <a href="#"
-              class="d-block text-decoration-none position-relative mb-4"
-              @click.prevent="goProduct(product.id)">
-            <img class="w-100 ojf-cover rounded-1 mb-2"
-                  :src="product.imageUrl" :alt="product.title"
-                  :style="{ height: mobileImgHeight + 'px' }">
-            <h3 class="fs-5 fw-bold text-black">{{ product.title }}</h3>
-            <small class="fw-bold text-bold text-black me-2">
-              $NT{{ $filters.currency(product.price) }}
-            </small>
-            <small v-if="product.price !== product.origin_price"
-                  class="fw-bold text-bold text-secondary text-decoration-line-through">
-              $NT{{ $filters.currency(product.origin_price) }}
-            </small>
-            <small v-if="product.price !== product.origin_price"
-                  class="text-white fw-bold position-absolute top-0 end-0 py-2 pe-2">
-                  Sale
-            </small>
-          </a>
-        </div>
-      </template>
-      <div v-for="(col, index) in dynaCol" :key="index" :ref="setColRef"
-            class="col-3">
-        <template v-if="device === 'PC'">
-            <a href="#" v-for="product in dynaCol[index]" :key="product.id"
-                class="d-block text-decoration-none position-relative mb-5"
-                @click.prevent="goProduct(product.id)">
-              <img class="w-100 ojf-cover rounded-1 mb-2"
-                    :src="product.imageUrl" :alt="product.title">
-              <h3 class="fs-4 fw-bold text-black">{{ product.title }}</h3>
-              <span class="fw-bold text-bold text-black me-2">
-                $NT{{ $filters.currency(product.price) }}
-              </span>
-              <span v-if="product.price !== product.origin_price"
-                    class="fw-bold text-bold text-secondary text-decoration-line-through">
-                $NT{{ $filters.currency(product.origin_price) }}
-              </span>
-              <span v-if="product.price !== product.origin_price"
-                    class="text-white fw-bold position-absolute top-0 end-0 py-3 pe-3">
-                    On Sale
-              </span>
-            </a>
-        </template>
+
+    <div class="row d-md-none gx-3 gx-md-4 align-items-md-start">
+      <div v-for="product in this.filterProducts" :key="product.id"
+            class="col-6">
+        <a href="#"
+            class="d-block text-decoration-none position-relative mb-4 hover-scale"
+            @click.prevent="goProduct(product.id)">
+          <img class="w-100 ojf-cover rounded-1 mb-2"
+                :src="product.imageUrl" :alt="product.title"
+                :style="{ height: mobileImgHeight + 'px' }">
+          <h3 class="fs-5 fw-bold text-black">{{ product.title }}</h3>
+          <small class="fw-bold text-bold text-black me-2">
+            $NT{{ $filters.currency(product.price) }}
+          </small>
+          <small v-if="product.price !== product.origin_price"
+                class="fw-bold text-bold text-secondary text-decoration-line-through">
+            $NT{{ $filters.currency(product.origin_price) }}
+          </small>
+          <small v-if="product.price !== product.origin_price"
+                class="text-white fw-bold position-absolute top-0 end-0 py-2 pe-2">
+                Sale
+          </small>
+        </a>
       </div>
     </div>
+
+    <div class="row d-none d-md-flex" data-masonry='{"percentPosition": true}' ref="masonryRow">
+      <div class="col-3" v-for="product in filterProducts" :key="product.id">
+        <a href="#"
+            class="d-block text-decoration-none position-relative mb-5 hover-scale"
+            @click.prevent="goProduct(product.id)">
+          <img class="w-100 ojf-cover rounded-1 mb-2"
+                :src="product.imageUrl" :alt="product.title">
+          <h3 class="fs-4 fw-bold text-black">{{ product.title }}</h3>
+          <span class="fw-bold text-bold text-black me-2">
+            $NT{{ $filters.currency(product.price) }}
+          </span>
+          <span v-if="product.price !== product.origin_price"
+                class="fw-bold text-bold text-secondary text-decoration-line-through">
+            $NT{{ $filters.currency(product.origin_price) }}
+          </span>
+          <span v-if="product.price !== product.origin_price"
+                class="text-white fw-bold position-absolute top-0 end-0 py-3 pe-3">
+                On Sale
+          </span>
+        </a>
+      </div>
+    </div>
+
   </section>
 
 </template>
 
 <script>
+import Masonry from 'masonry-layout/masonry';
+
 export default {
   inject: ['$emitter', '$filters'],
   props: {
@@ -87,38 +89,19 @@ export default {
   data() {
     return {
       products: [],
-      dynaCol: [[], [], [], []],
-      colRefs: [],
       browserWidth: 0,
       device: '',
       mobileImgHeight: 0,
       areaSelected: '全部',
       areas: [
-        {
-          name: '全部',
-          amount: 0,
-        },
-        {
-          name: '北部',
-          amount: 0,
-        },
-        {
-          name: '中部',
-          amount: 0,
-        },
-        {
-          name: '南部',
-          amount: 0,
-        },
-        {
-          name: '東部',
-          amount: 0,
-        },
-        {
-          name: '離島',
-          amount: 0,
-        },
+        { name: '全部', amount: 0 },
+        { name: '北部', amount: 0 },
+        { name: '中部', amount: 0 },
+        { name: '南部', amount: 0 },
+        { name: '東部', amount: 0 },
+        { name: '離島', amount: 0 },
       ],
+      masonry: {},
     };
   },
   computed: {
@@ -137,41 +120,6 @@ export default {
       productsPromote
         .push(...productsArr.filter((item) => item.price === item.origin_price));
       this.products = productsPromote;
-    },
-    pushProducts(arg) {
-      if (this.device === 'PC') {
-        const index = arg || 0;
-        const putIndex = this.selectCol();
-        if (this.filterProducts.length > index) {
-          this.dynaCol[putIndex].push(this.filterProducts[index]);
-          this.$nextTick(() => {
-            this.pushProducts(index + 1);
-          });
-        }
-      }
-    },
-    selectCol() {
-      const height0 = this.colRefs[0].offsetHeight;
-      const height1 = this.colRefs[1].offsetHeight;
-      const height2 = this.colRefs[2].offsetHeight;
-      const height3 = this.colRefs[3].offsetHeight;
-      switch (Math.min(height0, height1, height2, height3)) {
-        case height0:
-          return 0;
-        case height1:
-          return 1;
-        case height2:
-          return 2;
-        case height3:
-          return 3;
-        default:
-          return -1;
-      }
-    },
-    setColRef(el) {
-      if (el) {
-        this.colRefs.push(el);
-      }
     },
     getBrowserWidth() {
       this.browserWidth = window.innerWidth;
@@ -220,19 +168,7 @@ export default {
         this.device = 'PC';
       }
     },
-    device() {
-      if (this.device === 'mobile') {
-        this.dynaCol = [[], [], [], []];
-        this.pushProducts();
-      }
-      if (this.device === 'PC') {
-        this.dynaCol = [[], [], [], []];
-        this.pushProducts();
-      }
-    },
     areaSelected(area) {
-      this.dynaCol = [[], [], [], []];
-      this.pushProducts();
       this.$emitter.emit('areaFromList', area);
     },
   },
@@ -251,9 +187,14 @@ export default {
     };
     this.getBrowserWidth();
     this.$emitter.on('areaFromNavbar', this.areaFromNavbarHandler);
+    this.masonry = new Masonry(this.$refs.masonryRow, {
+      percentPosition: true,
+    });
   },
-  beforeUpdate() {
-    this.colRefs = [];
+  updated() {
+    this.masonry = new Masonry(this.$refs.masonryRow, {
+      percentPosition: true,
+    });
   },
   beforeUnmount() {
     this.$emitter.off('areaFromNavbar', this.areaFromNavbarHandler);
@@ -263,13 +204,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.row {
-  a {
-    transition: transform 0.5s;
-    &:hover {
-      transform: scale(1.1);
-    }
-  }
-}
-</style>

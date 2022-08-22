@@ -82,11 +82,6 @@ export default {
     DelModal,
     PaginationComponent,
   },
-  // computed: {
-  //   orderProducts(products) {
-  //     return Object.values(products);
-  //   },
-  // },
   methods: {
     getOrders(page = 1) {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/orders?page=${page}`;
@@ -130,31 +125,6 @@ export default {
   },
   created() {
     this.getOrders();
-    // 測試開始
-    // // 後端時間格式（秒）
-    // const UnixTimestamp = Math.floor(new Date().getTime() / 1000);
-    // console.log('後端時間格式', UnixTimestamp);
-    // // iso 未轉換格式
-    // console.log('iso 未轉換格式', this.$dayjs.unix(UnixTimestamp).format());
-    // // iso 日期
-    // const isoDate = this.$dayjs.unix(UnixTimestamp).tz('Asia/Taipei').format('YYYY-MM-DD');
-    // console.log('iso 日期', isoDate);
-    // // iso 時間
-    // const isoTime = this.$dayjs.unix(UnixTimestamp).tz('Asia/Taipei').format('HH:mm:ss');
-    // console.log('iso 時間', isoTime);
-    // // 重組回+8時區標iso時間
-    // const combineIsoTime = `${isoDate}T${isoTime}+08:00`;
-    // console.log('重組時間', combineIsoTime);
-    // // 轉回後端 Unix 格式（秒）
-    // const backUnixTimestamp = this.$dayjs(combineIsoTime).unix();
-    // console.log('轉回後端 Unix 格式（秒）', backUnixTimestamp);
-    // 測試結束
   },
 };
 </script>
-
-<style lang="scss" scoped>
-img {
-  height: 200px;
-}
-</style>

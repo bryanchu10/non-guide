@@ -54,14 +54,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.navbar {
-  background-color: #ffffff;
-  :deep(.navbar-toggler) {
-    color: #000000;
-    &:hover {
-      color: rgba(#000000, .75);
-    }
-  }
-}
-</style>
