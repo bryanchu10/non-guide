@@ -3,9 +3,10 @@
     <div class="container">
       <ul class="navbar-nav flex-row justify-content-between justify-content-md-start w-100">
         <li class="nav-item me-md-5" v-for="(area, index) in areas" :key="index">
-          <a class="nav-link"
+          <a href="#"
+              class="nav-link"
               :class="[areaSelected === area.name ? 'active fw-bold': 'link-secondary']"
-              href="#" @click.prevent="areaSelected = area.name">
+              @click.prevent="areaSelected = area.name">
             <span class="fs-md-4">
               {{ area.name }}
             </span>
@@ -17,12 +18,14 @@
       </ul>
     </div>
   </nav>
+
   <section class="container pt-4 pt-md-5 mb-4">
     <div class="row gx-3 gx-md-4 align-items-md-start">
       <template v-if="device === 'mobile'">
         <div v-for="product in this.filterProducts" :key="product.id"
               class="col-6">
-          <a href="#" class="d-block text-decoration-none position-relative mb-4"
+          <a href="#"
+              class="d-block text-decoration-none position-relative mb-4"
               @click.prevent="goProduct(product.id)">
             <img class="w-100 ojf-cover rounded-1 mb-2"
                   :src="product.imageUrl" :alt="product.title"
@@ -42,32 +45,34 @@
           </a>
         </div>
       </template>
-        <div v-for="(col, index) in dynaCol" :key="index" :ref="setColRef"
-              class="col-3">
-      <template v-if="device === 'PC'">
-          <a href="#" v-for="product in dynaCol[index]" :key="product.id"
-              class="d-block text-decoration-none position-relative mb-5"
-              @click.prevent="goProduct(product.id)">
-            <img class="w-100 ojf-cover rounded-1 mb-2"
-                  :src="product.imageUrl" :alt="product.title">
-            <h3 class="fs-4 fw-bold text-black">{{ product.title }}</h3>
-            <span class="fw-bold text-bold text-black me-2">
-              $NT{{ $filters.currency(product.price) }}
-            </span>
-            <span v-if="product.price !== product.origin_price"
-                  class="fw-bold text-bold text-secondary text-decoration-line-through">
-              $NT{{ $filters.currency(product.origin_price) }}
-            </span>
-            <span v-if="product.price !== product.origin_price"
-                  class="text-white fw-bold position-absolute top-0 end-0 py-3 pe-3">
-                  On Sale
-            </span>
-          </a>
-      </template>
-        </div>
+      <div v-for="(col, index) in dynaCol" :key="index" :ref="setColRef"
+            class="col-3">
+        <template v-if="device === 'PC'">
+            <a href="#" v-for="product in dynaCol[index]" :key="product.id"
+                class="d-block text-decoration-none position-relative mb-5"
+                @click.prevent="goProduct(product.id)">
+              <img class="w-100 ojf-cover rounded-1 mb-2"
+                    :src="product.imageUrl" :alt="product.title">
+              <h3 class="fs-4 fw-bold text-black">{{ product.title }}</h3>
+              <span class="fw-bold text-bold text-black me-2">
+                $NT{{ $filters.currency(product.price) }}
+              </span>
+              <span v-if="product.price !== product.origin_price"
+                    class="fw-bold text-bold text-secondary text-decoration-line-through">
+                $NT{{ $filters.currency(product.origin_price) }}
+              </span>
+              <span v-if="product.price !== product.origin_price"
+                    class="text-white fw-bold position-absolute top-0 end-0 py-3 pe-3">
+                    On Sale
+              </span>
+            </a>
+        </template>
+      </div>
     </div>
   </section>
+
 </template>
+
 <script>
 export default {
   inject: ['$emitter', '$filters'],
@@ -126,18 +131,12 @@ export default {
   },
   methods: {
     getProducts() {
-    //   // const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
-    //   // this.$http.get(api)
-    //   //   .then((res) => {
-    //   //     if (res.data.success) {
       const productsArr = JSON.parse(JSON.stringify(this.parentProductsData));
       const productsPromote = productsArr
         .filter((item) => item.price !== item.origin_price);
       productsPromote
         .push(...productsArr.filter((item) => item.price === item.origin_price));
       this.products = productsPromote;
-    //   //     }
-    //   //   });
     },
     pushProducts(arg) {
       if (this.device === 'PC') {

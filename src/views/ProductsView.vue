@@ -1,8 +1,12 @@
 <template>
   <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
-  <router-view v-if="productsDataGotten"
-                :parent-products-data="productsData"
-                :key="pageKey"/>
+  <section class="list position-relative"
+            :class="{ 'py-7': !productsDataGotten}">
+    <VueLoading :active="!productsDataGotten" :is-full-page="false"/>
+    <router-view v-if="productsDataGotten"
+                  :parent-products-data="productsData"
+                  :key="pageKey"/>
+  </section>
   <SubscribeMe/>
   <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
   <CartOffcanvas ref="cartOffcanvas"/>
@@ -33,7 +37,7 @@ export default {
   },
   computed: {
     pageKey() {
-      // 綁定隨機鍵值，讓切換頁面的時候重新選染元件，避免資料狀態沒有更新。
+      // 綁定隨機鍵值，讓切換頁面的時候重新渲染元件，避免資料狀態沒有更新。
       return this.$route.path + Math.random();
     },
   },
@@ -54,15 +58,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.navbar {
-  background-color: #ffffff;
-  :deep(.navbar-toggler) {
-    color: #000000;
-    &:hover {
-      color: rgba(#000000, .75);
-    }
-  }
-}
-</style>

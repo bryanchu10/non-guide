@@ -1,6 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg w-100 py-3"
-        :class="[$route.name === 'home' ? 'position-absolute zindex-1' : 'fixed-top']">
+  <nav class="navbar navbar-expand-lg bg-white w-100 py-3"
+        :class="[$route.name === 'home'
+                  ? 'bg-transparent position-absolute zindex-1'
+                  : 'fixed-top']">
     <div class="container align-items-center">
       <button class="navbar-toggler fs-3 border-0 ps-0 ms-1"
               :class="{'link-light': $route.name === 'home'}"
