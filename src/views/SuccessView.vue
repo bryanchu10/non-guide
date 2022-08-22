@@ -1,8 +1,9 @@
 <template>
   <nav class="navbar fixed-top py-3">
     <div class="container justify-content-center justify-content-sm-start">
-      <router-link class="navbar-brand py-0" to="/">
-        <h1 class="fs-4 fw-bold text-light text-lg-dark lh-base mb-0d">烏有指南</h1>
+      <router-link class="navbar-brand d-flex align-items-center pe-2 py-0" to="/">
+        <img class="me-2" src="@/assets/logo.svg" alt="logo" width="24" height="24">
+        <h1 class="fs-4 fw-bold text-light text-lg-dark lh-base mb-0">烏有指南</h1>
       </router-link>
     </div>
   </nav>

@@ -113,13 +113,13 @@
 </template>
 
 <script>
-import UserNavbar from '@/components/UserNavbar.vue';
-import MeltTransText from '@/components/MeltTransText.vue';
-import ProductRecommend from '@/components/ProductRecommend.vue';
-import SubscribeMe from '@/components/SubscribeMe.vue';
-import UserFooter from '@/components/UserFooter.vue';
-import CartOffcanvas from '@/components/CartOffcanvas.vue';
-import LoginModal from '@/components/LoginModal.vue';
+import UserNavbar from '@/components/layouts/UserNavbar.vue';
+import MeltTransText from '@/components/helpers/MeltTransText.vue';
+import ProductRecommend from '@/components/layouts/ProductRecommend.vue';
+import SubscribeMe from '@/components/layouts/SubscribeMe.vue';
+import UserFooter from '@/components/layouts/UserFooter.vue';
+import CartOffcanvas from '@/components/layouts/CartOffcanvas.vue';
+import LoginModal from '@/components/modals/LoginModal.vue';
 
 export default {
   name: 'HomeView',

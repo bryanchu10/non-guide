@@ -172,6 +172,8 @@ $utilities: map-merge(
       property: width,
       class: w,
       values: (
+        lv1: 96px, // custom
+        lv11: 600px, // custom
         25: 25%,
         50: 50%,
         75: 75%,
@@ -200,17 +202,17 @@ $utilities: map-merge(
       class: h,
       values: (
         0: 0, // custom
-        lv1: 96px, //custom
-        lv2: 120px, //custom
-        lv3: 216px, //custom
-        lv4: 244px, //custom
-        lv5: 296px, //custom
-        lv6: 320px, //custom
-        lv7: 356px, //custom
-        lv8: 400px, //custom
-        lv9: 416px, //custom
-        lv10: 500px, //custom
-        lv11: 600px, //custom
+        lv1: 96px, // custom
+        lv2: 120px, // custom
+        lv3: 216px, // custom
+        lv4: 244px, // custom
+        lv5: 296px, // custom
+        lv6: 320px, // custom
+        lv7: 356px, // custom
+        lv8: 400px, // custom
+        lv9: 416px, // custom
+        lv10: 500px, // custom
+        lv11: 600px, // custom
         25: 25%,
         50: 50%,
         75: 75%,
@@ -743,6 +745,15 @@ $utilities: map-merge(
       )
     ),
     // object-position 結束
+    // text-indent 開始
+    "text-indent": (
+      property: text-indent,
+      class: text-indent,
+      values: (
+        n1: -1rem,
+      )
+    ),
+    // text-indent 結束
   ),
   $utilities
 );
