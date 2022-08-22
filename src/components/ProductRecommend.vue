@@ -193,15 +193,16 @@ export default {
     goProduct(id) {
       this.$router.push(`/products/${id}`);
     },
+    resizeHandler() {
+      this.getBrowserWidth();
+    },
   },
   mounted() {
-    window.onresize = () => {
-      this.getBrowserWidth();
-    };
+    window.addEventListener('resize', this.resizeHandler);
     this.getBrowserWidth();
   },
-  unmounted() {
-    window.onresize = null;
+  beforeUnmount() {
+    window.removeEventListener('resize', this.resizeHandler);
   },
 };
 </script>

@@ -11,8 +11,9 @@
               aria-controls="offcanvasNavbar">
         <i class="bi bi-list"></i>
       </button>
-      <router-link class="navbar-brand py-0" to="/"
-                    :class="{'text-light text-md-dark': $route.name === 'home'}">
+      <router-link class="navbar-brand d-flex align-items-center pe-3 py-0" to="/"
+                    :class="{'text-light text-lg-dark': $route.name === 'home'}">
+        <img class="me-2" src="../assets/logo.svg" alt="logo" width="24" height="24">
         <h1 class="fs-4 fw-bold lh-base mb-0">烏有指南</h1>
       </router-link>
       <div class="offcanvas offcanvas-start" tabindex="-1" ref="menuOffcanvas"
@@ -64,14 +65,14 @@
                     再額外寫上需要呈現 active 樣式的情況。-->
               <router-link class="nav-link" to="/products/list"
                           :class="{'active fw-bold': $route.name === 'product',
-                                    'text-md-light': $route.name === 'home'}">
+                                    'text-light': $route.name === 'home'}">
                 出版品
               </router-link>
             </li>
             <li class="nav-item px-lg-3">
               <router-link class="nav-link" to="/about/overview"
                           :class="{'active fw-bold': $route.name === 'article',
-                                    'text-md-light': $route.name === 'home'}">
+                                    'text-lg-light': $route.name === 'home'}">
                 關於
               </router-link>
             </li>
@@ -90,7 +91,6 @@
         </span>
       </a>
     </div>
-    <!-- <button @click="this.$refs.menuOffcanvas.hide()">測試</button> -->
   </nav>
 </template>
 
@@ -136,12 +136,6 @@ export default {
         this.areaSelected = this.$route.params.areaThroughRouter;
       }
     }
-    // if (this.$route.name === 'product') {
-    //   this.onSingleProduct = true;
-    // }
-    // if (this.$route.name === 'article') {
-    //   this.onSingleArticle = true;
-    // }
   },
   mounted() {
     this.offcanvas = new Offcanvas(this.$refs.menuOffcanvas);

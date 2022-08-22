@@ -75,6 +75,7 @@
 
 <script>
 import Masonry from 'masonry-layout/masonry';
+import ImagesLoaded from 'imagesloaded/imagesloaded';
 
 export default {
   inject: ['$emitter', '$filters'],
@@ -102,6 +103,7 @@ export default {
         { name: '離島', amount: 0 },
       ],
       masonry: {},
+      imagesLoaded: {},
     };
   },
   computed: {
@@ -153,6 +155,15 @@ export default {
     areaFromNavbarHandler(area) {
       this.areaSelected = area;
     },
+    resizeHandler() {
+      this.getBrowserWidth();
+    },
+    loadHandler() {
+      console.log('loadHandler');
+      this.masonry = new Masonry(this.$refs.masonryRow, {
+        percentPosition: true,
+      });
+    },
   },
   watch: {
     browserWidth() {
@@ -182,13 +193,13 @@ export default {
     this.countAreaAmount();
   },
   mounted() {
-    window.onresize = () => {
-      this.getBrowserWidth();
-    };
+    window.addEventListener('resize', this.resizeHandler);
     this.getBrowserWidth();
     this.$emitter.on('areaFromNavbar', this.areaFromNavbarHandler);
-    this.masonry = new Masonry(this.$refs.masonryRow, {
-      percentPosition: true,
+    this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
+      this.masonry = new Masonry(this.$refs.masonryRow, {
+        percentPosition: true,
+      });
     });
   },
   updated() {
@@ -198,9 +209,7 @@ export default {
   },
   beforeUnmount() {
     this.$emitter.off('areaFromNavbar', this.areaFromNavbarHandler);
-  },
-  unmounted() {
-    window.onresize = null;
+    window.removeEventListener('resize', this.resizeHandler);
   },
 };
 </script>
