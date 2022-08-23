@@ -140,6 +140,7 @@ export default {
       isoCreate_at_time: '',
       isoPaid_date: '',
       hasMessage: false,
+      modal: {},
     };
   },
   computed: {

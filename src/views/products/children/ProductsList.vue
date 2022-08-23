@@ -104,6 +104,7 @@ export default {
       ],
       masonry: {},
       imagesLoaded: {},
+      browserWidth: 0,
     };
   },
   computed: {
@@ -172,6 +173,7 @@ export default {
     },
   },
   created() {
+    console.log(windowResizeMixin.browserWidth);
     if (!this.$route.params.areaThroughRouter) {
       this.areaSelected = '全部';
     } else {

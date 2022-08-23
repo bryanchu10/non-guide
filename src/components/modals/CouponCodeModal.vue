@@ -45,6 +45,11 @@ export default {
       },
     },
   },
+  data() {
+    return {
+      modal: {},
+    };
+  },
   methods: {
     copyCouponCode() {
       navigator.clipboard.writeText(this.coupon.code);
