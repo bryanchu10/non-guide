@@ -96,6 +96,7 @@ export default {
       isLoading: false,
       isoDue_date_date: '',
       isoDue_date_time: '',
+      modal: {},
     };
   },
   computed: {

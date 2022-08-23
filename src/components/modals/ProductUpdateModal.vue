@@ -126,6 +126,7 @@ export default {
     return {
       tempProduct: {},
       isLoading: false,
+      modal: {},
     };
   },
   methods: {

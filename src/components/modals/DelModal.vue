@@ -37,6 +37,7 @@ export default {
     return {
       tempItem: {},
       titleStr: '',
+      modal: {},
     };
   },
   watch: {

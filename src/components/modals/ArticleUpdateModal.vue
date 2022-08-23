@@ -109,6 +109,7 @@ export default {
       tempArticle: {},
       isLoading: false,
       isoCreate_at: '',
+      modal: {},
     };
   },
   watch: {

@@ -64,6 +64,7 @@ export default {
         password: '',
       },
       isLoading: false,
+      modal: {},
     };
   },
   methods: {

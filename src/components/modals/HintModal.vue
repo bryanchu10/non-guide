@@ -26,6 +26,11 @@
 import modalMixin from '@/mixins/modalMixin';
 
 export default {
+  data() {
+    return {
+      modal: {},
+    };
+  },
   methods: {
     hideModalHandler() {
       this.$router.push('/products/list');

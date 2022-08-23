@@ -1,10 +1,5 @@
 export default {
   methods: {
-    data() {
-      return {
-        browserWidth: 0,
-      };
-    },
     getBrowserWidth() {
       this.browserWidth = window.innerWidth;
     },

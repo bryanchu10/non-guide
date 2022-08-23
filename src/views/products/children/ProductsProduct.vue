@@ -143,6 +143,7 @@ export default {
       status: {
         loadingItem: '',
       },
+      browserWidth: 0,
     };
   },
   components: {
