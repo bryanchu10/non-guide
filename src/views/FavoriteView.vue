@@ -1,28 +1,14 @@
 <template>
-  <nav class="navbar bg-light mt-6">
-    <div class="container">
-      <ul class="navbar-nav flex-row justify-content-between justify-content-md-start w-100">
-        <li class="nav-item me-md-5" v-for="(area, index) in areas" :key="index">
-          <a href="#"
-              class="nav-link"
-              :class="[areaSelected === area.name ? 'active fw-bold': 'link-secondary']"
-              @click.prevent="areaSelected = area.name">
-            <span class="fs-md-4">
-              {{ area.name }}
-            </span>
-            <small class="fs-8 fs-md-7 align-top ms-1">
-              {{ area.amount }}
-            </small>
-          </a>
-        </li>
-      </ul>
+  <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
+
+  <section class="container mt-6 mb-4 position-relative"
+            :class="[productsDataGotten ? 'pt-4' : 'py-7']">
+    <VueLoading :active="!productsDataGotten" :is-full-page="false"/>
+    <div v-if="!filterProducts.length" class="alert alert-warning" role="alert">
+      目前您還沒有收藏任何出版品。您可以在個別出版品頁面的資訊卡，點選右上 <i class="bi bi-heart"></i> 符號，將該出版品加入收藏清單。
     </div>
-  </nav>
-
-  <section class="container pt-4 pt-md-5 mb-4">
-
     <div class="row d-md-none gx-3 gx-md-4 align-items-md-start">
-      <div v-for="product in this.filterProducts" :key="product.id"
+      <div v-for="product in filterProducts" :key="product.id"
             class="col-6">
         <a href="#"
             class="d-block text-decoration-none position-relative mb-4 hover-scale"
@@ -71,6 +57,12 @@
 
   </section>
 
+  <SubscribeMe/>
+
+  <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
+
+  <CartOffcanvas ref="cartOffcanvas"/>
+  <LoginModal ref="loginModal"/>
 </template>
 
 <script>
@@ -78,111 +70,69 @@ import windowResizeMixin from '@/mixins/windowResizeMixin';
 import Masonry from 'masonry-layout/masonry';
 import ImagesLoaded from 'imagesloaded/imagesloaded';
 
+import UserNavbar from '@/components/layouts/UserNavbar.vue';
+import SubscribeMe from '@/components/layouts/SubscribeMe.vue';
+import UserFooter from '@/components/layouts/UserFooter.vue';
+import CartOffcanvas from '@/components/layouts/CartOffcanvas.vue';
+import LoginModal from '@/components/modals/LoginModal.vue';
+
 export default {
-  inject: ['$emitter', '$filters'],
-  props: {
-    parentProductsData: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-  },
+  name: 'FavoriteView',
+  inject: ['$filters'],
   data() {
     return {
-      products: [],
-      device: '',
-      mobileImgHeight: 0,
-      areaSelected: '全部',
-      areas: [
-        { name: '全部', amount: 0 },
-        { name: '北部', amount: 0 },
-        { name: '中部', amount: 0 },
-        { name: '南部', amount: 0 },
-        { name: '東部', amount: 0 },
-        { name: '離島', amount: 0 },
-      ],
-      masonry: {},
-      imagesLoaded: {},
+      productsData: [],
+      productsDataGotten: false,
+      isLoading: false,
+      favorities: [],
+      filterProducts: [],
       browserWidth: 0,
+      mobileImgHeight: 0,
     };
   },
-  computed: {
-    filterProducts() {
-      if (this.areaSelected !== '全部') {
-        return this.products.filter((product) => product.category.match(this.areaSelected));
-      }
-      return this.products;
-    },
+  components: {
+    UserNavbar,
+    SubscribeMe,
+    UserFooter,
+    CartOffcanvas,
+    LoginModal,
   },
   methods: {
     getProducts() {
-      const productsArr = JSON.parse(JSON.stringify(this.parentProductsData));
-      const productsPromote = productsArr
-        .filter((item) => item.price !== item.origin_price);
-      productsPromote
-        .push(...productsArr.filter((item) => item.price === item.origin_price));
-      this.products = productsPromote;
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
+      this.$http.get(api)
+        .then((res) => {
+          if (res.data.success) {
+            this.productsData = JSON.parse(JSON.stringify(res.data.products));
+            this.productsDataGotten = true;
+            this.getFavorites();
+          }
+        });
     },
-    countAreaAmount() {
-      this.areas[0].amount = this.products.length;
-      this.products.forEach((product) => {
-        switch (product.category) {
-          case '北部':
-            this.areas[1].amount += 1;
-            break;
-          case '中部':
-            this.areas[2].amount += 1;
-            break;
-          case '南部':
-            this.areas[3].amount += 1;
-            break;
-          case '東部':
-            this.areas[4].amount += 1;
-            break;
-          case '離島':
-            this.areas[5].amount += 1;
-            break;
-          default:
-        }
+    getFavorites() {
+      this.favorities = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
+      this.favorities.forEach((id) => {
+        this.filterProducts.push(this.productsData.find((product) => product.id === id));
       });
     },
     goProduct(id) {
       this.$router.push(`/products/${id}`);
     },
-    areaFromNavbarHandler(area) {
-      this.areaSelected = area;
-    },
   },
   watch: {
     browserWidth() {
       if (this.browserWidth < 576) {
-        this.device = 'mobile';
         this.mobileImgHeight = (this.browserWidth - 16 - 12 * 2) * 0.5;
       }
       if (this.browserWidth >= 576 && this.browserWidth < 768) {
-        this.device = 'mobile';
         this.mobileImgHeight = (532 - 16 * 2) * 0.5;
       }
-      if (this.browserWidth >= 768) {
-        this.device = 'PC';
-      }
-    },
-    areaSelected(area) {
-      this.$emitter.emit('areaFromList', area);
     },
   },
   created() {
-    if (!this.$route.params.areaThroughRouter) {
-      this.areaSelected = '全部';
-    } else {
-      this.areaSelected = this.$route.params.areaThroughRouter;
-    }
     this.getProducts();
-    this.countAreaAmount();
   },
   mounted() {
-    this.$emitter.on('areaFromNavbar', this.areaFromNavbarHandler);
     this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
       this.masonry = new Masonry(this.$refs.masonryRow, {
         percentPosition: true,
@@ -193,9 +143,6 @@ export default {
     this.masonry = new Masonry(this.$refs.masonryRow, {
       percentPosition: true,
     });
-  },
-  beforeUnmount() {
-    this.$emitter.off('areaFromNavbar', this.areaFromNavbarHandler);
   },
   mixins: [windowResizeMixin],
 };

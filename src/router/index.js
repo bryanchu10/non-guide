@@ -70,6 +70,11 @@ const routes = [
     component: () => import('../views/SuccessView.vue'),
   },
   {
+    path: '/favorite',
+    name: 'favorite',
+    component: () => import('../views/FavoriteView.vue'),
+  },
+  {
     path: '/admin',
     name: 'admin',
     component: () => import('../views/admin/AdminView.vue'),

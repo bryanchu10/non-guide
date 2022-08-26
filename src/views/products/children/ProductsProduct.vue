@@ -23,7 +23,7 @@
                   translate-middle-md-y">
         <div class="p-3 py-md-4 ps-md-4 pe-md-0 bg-white rounded-1"
               ref="infoCard">
-          <nav aria-label="breadcrumb">
+          <nav aria-label="breadcrumb" class="d-flex">
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
                 <router-link to="/" class="text-decoration-none link-secondary">
@@ -42,6 +42,11 @@
                 </a>
               </li>
             </ol>
+            <a href="#" class="link-secondary ms-auto" aria-label="加入最愛"
+                @click.prevent="toggleFavorities">
+              <i v-if="isfavorite" class="bi bi-heart-fill text-primary"></i>
+              <i v-else class="bi bi-heart"></i>
+            </a>
           </nav>
           <h2 class="fs-2 fs-md-1 fw-bold lh-base mb-4">{{ product.title }}</h2>
           <div class="row">
@@ -144,6 +149,8 @@ export default {
         loadingItem: '',
       },
       browserWidth: 0,
+      isfavorite: false,
+      favorities: [],
     };
   },
   components: {
@@ -173,6 +180,12 @@ export default {
     getBrowserWidth() {
       this.browserWidth = window.innerWidth;
     },
+    getFavorities() {
+      this.favorities = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
+      if (this.favorities.indexOf(this.productId) !== -1) {
+        this.isfavorite = true;
+      }
+    },
     addCart(id) {
       const productInfo = {
         product_id: id,
@@ -201,6 +214,16 @@ export default {
         this.productAmount = 99;
       }
     },
+    toggleFavorities() {
+      this.favorities = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
+      if (this.isfavorite === false) {
+        this.favorities.push(this.productId);
+      } else {
+        this.favorities = this.favorities.filter((item) => item !== this.productId);
+      }
+      this.isfavorite = !this.isfavorite;
+      localStorage.setItem('favoriteProducts', JSON.stringify(this.favorities));
+    },
   },
   watch: {
     browserWidth() {
@@ -211,6 +234,7 @@ export default {
   },
   created() {
     this.productId = this.$route.params.productId;
+    this.getFavorities();
     this.getProduct();
     this.getProducts();
   },

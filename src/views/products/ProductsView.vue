@@ -1,12 +1,12 @@
 <template>
   <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
-  <section class="list position-relative"
+  <div class="position-relative"
             :class="{ 'py-7': !productsDataGotten}">
     <VueLoading :active="!productsDataGotten" :is-full-page="false"/>
     <router-view v-if="productsDataGotten"
                   :parent-products-data="productsData"
                   :key="pageKey"/>
-  </section>
+  </div>
   <SubscribeMe/>
   <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
   <CartOffcanvas ref="cartOffcanvas"/>
