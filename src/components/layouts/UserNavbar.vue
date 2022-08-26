@@ -30,17 +30,37 @@
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1">
+            <li class="nav-item  px-lg-3">
+              <!-- 因為單一出版品、單一關於文章的路徑和出版品總覽、關於文章總覽的路徑不同，
+                    並且因為設計的原因，單一頁面並不是總覽的子路由，
+                    但要讓使用者以為單一頁面是在總覽頁面下層，
+                    所以在 Vue Router 提供的 linkActiveClass 功能之外，
+                    再額外寫上需要呈現 active 樣式的情況。-->
+              <router-link class="nav-link" to="/about/overview"
+                          :class="{'active fw-bold': $route.name === 'article',
+                                    'text-lg-light': $route.name === 'home'}">
+                關於
+              </router-link>
+            </li>
+            <li class="nav-item d-none d-lg-flex px-3">
+              <router-link class="nav-link" to="/products/list"
+                          :class="{'active fw-bold': $route.name === 'product',
+                                    'text-light': $route.name === 'home'}">
+                出版品
+              </router-link>
+            </li>
             <li class="nav-item dropdown d-lg-none">
               <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item border-bottom">
                   <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed px-0 bg-transparent" type="button"
+                    <button class="accordion-button collapsed lh-base px-0 py-2 bg-transparent"
+                            type="button"
                             data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
                             aria-expanded="false" aria-controls="flush-collapseOne">
                       出版品
                     </button>
                   </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse"
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" ref="areaCollapse"
                         aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body px-0 py-2">
                       <div class="list-group list-group-flush">
@@ -57,23 +77,10 @@
                 </div>
               </div>
             </li>
-            <li class="nav-item d-none d-lg-flex px-3">
-              <!-- 因為單一出版品、單一關於文章的路徑和出版品總覽、關於文章總覽的路徑不同，
-                    並且因為設計的原因，單一頁面並不是總覽的子路由，
-                    但要讓使用者以為單一頁面是在總覽頁面下層，
-                    所以在 Vue Router 提供的 linkActiveClass 功能之外，
-                    再額外寫上需要呈現 active 樣式的情況。-->
-              <router-link class="nav-link" to="/products/list"
-                          :class="{'active fw-bold': $route.name === 'product',
-                                    'text-light': $route.name === 'home'}">
-                出版品
-              </router-link>
-            </li>
             <li class="nav-item px-lg-3">
-              <router-link class="nav-link" to="/about/overview"
-                          :class="{'active fw-bold': $route.name === 'article',
-                                    'text-lg-light': $route.name === 'home'}">
-                關於
+              <router-link class="nav-link" to="/favorite"
+                          :class="{'text-lg-light': $route.name === 'home'}">
+                收藏
               </router-link>
             </li>
           </ul>
@@ -96,6 +103,7 @@
 
 <script>
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
+import Collapse from 'bootstrap/js/dist/collapse';
 
 export default {
   inject: ['$emitter'],
@@ -107,6 +115,7 @@ export default {
       onSingleArticle: false,
       cartFilled: false,
       offcanvas: {},
+      Collapse: {},
     };
   },
   methods: {
@@ -139,6 +148,12 @@ export default {
   },
   mounted() {
     this.offcanvas = new Offcanvas(this.$refs.menuOffcanvas);
+    this.collapse = new Collapse(this.$refs.areaCollapse, {
+      toggle: false,
+    });
+    if (this.$route.name === 'list') {
+      this.collapse.show();
+    }
     this.$emitter.on('areaFromList', this.areaFromListHandler);
     this.$emitter.on('cartFilled', this.cartFilledHandler);
   },
@@ -149,3 +164,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.accordion-button:not(.collapsed) {
+  font-weight: bold;
+}
+</style>
