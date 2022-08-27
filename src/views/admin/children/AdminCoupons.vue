@@ -14,8 +14,8 @@
             <th widht="" class="text-nowrap">優惠代碼</th>
             <th width="" class="text-nowrap">折扣</th>
             <th width="" class="text-nowrap">到期時間</th>
-            <th width="" class="text-nowrap">狀態</th>
-            <th width="" class="text-nowrap">編輯</th>
+            <th width="80" class="text-nowrap">狀態</th>
+            <th width="120" class="text-nowrap">編輯</th>
           </tr>
         </thead>
         <tbody>
