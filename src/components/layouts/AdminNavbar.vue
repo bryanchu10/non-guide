@@ -11,22 +11,36 @@
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse" id="navbarNav" ref="menuCollapse">
         <ul class="navbar-nav w-100">
           <li class="nav-item">
-            <router-link to="/admin/products" class="nav-link">出版品</router-link>
+            <router-link to="/admin/products" class="nav-link"
+                          @click="closeCollapse">
+              出版品
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/admin/orders" class="nav-link">訂單</router-link>
+            <router-link to="/admin/orders" class="nav-link"
+                          @click="closeCollapse">
+              訂單
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/admin/coupons" class="nav-link">優惠券</router-link>
+            <router-link to="/admin/coupons" class="nav-link"
+                          @click="closeCollapse">
+              優惠券
+            </router-link>
           </li>
           <li class="nav-item mb-3 mb-md-0">
-            <router-link to="/admin/articles" class="nav-link">文章</router-link>
+            <router-link to="/admin/articles" class="nav-link"
+                          @click="closeCollapse">
+              文章
+            </router-link>
           </li>
           <button class="btn btn-outline-secondary ms-sm-auto mb-2 mb-md-0"
-                  @click="logOut">登出</button>
+                  @click="logOut">
+            登出
+          </button>
         </ul>
       </div>
     </div>
@@ -34,11 +48,14 @@
 </template>
 
 <script>
+import Collapse from 'bootstrap/js/dist/collapse';
+
 export default {
   data() {
     return {
       isScrollUp: false,
       scrollYPosition: 0,
+      collapse: {},
     };
   },
   methods: {
@@ -54,6 +71,9 @@ export default {
     scrollYHandler() {
       this.scrollYPosition = window.scrollY;
     },
+    closeCollapse() {
+      this.collapse.hide();
+    },
   },
   watch: {
     scrollYPosition(newPoisiton, oldPosition) {
@@ -66,6 +86,9 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.scrollYHandler);
+    this.collapse = new Collapse(this.$refs.menuCollapse, {
+      toggle: false,
+    });
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.scrollYHandler);
