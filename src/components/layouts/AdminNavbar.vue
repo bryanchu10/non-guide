@@ -68,11 +68,11 @@ export default {
           }
         });
     },
-    scrollYHandler() {
-      this.scrollYPosition = window.scrollY;
-    },
     closeCollapse() {
       this.collapse.hide();
+    },
+    scrollYHandler() {
+      this.scrollYPosition = window.scrollY;
     },
   },
   watch: {
