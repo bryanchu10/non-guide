@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-black">
+  <footer class="bg-black" ref="section">
     <div class="container pt-4 px-4 pb-3">
       <div class="row flex-column flex-xl-row">
         <div class="col-xl-10 mb-5 mb-xl-0">
@@ -25,7 +25,20 @@
   </footer>
 </template>
 <script>
-export default {
+import windowResizeMixin from '@/mixins/windowResizeMixin';
 
+export default {
+  data() {
+    return {
+      browserWidth: 0,
+      sectionHeight: 0,
+    };
+  },
+  watch: {
+    browserWidth() {
+      this.sectionHeight = this.$refs.section.offsetHeight;
+    },
+  },
+  mixins: [windowResizeMixin],
 };
 </script>

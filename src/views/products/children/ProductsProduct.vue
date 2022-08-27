@@ -177,9 +177,6 @@ export default {
       });
       this.$emitter.emit('areaFromNavbar', area);
     },
-    getBrowserWidth() {
-      this.browserWidth = window.innerWidth;
-    },
     getFavorities() {
       this.favorities = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
       if (this.favorities.indexOf(this.productId) !== -1) {
