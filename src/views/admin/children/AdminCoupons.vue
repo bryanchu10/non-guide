@@ -14,26 +14,26 @@
             <th widht="" class="text-nowrap">優惠代碼</th>
             <th width="" class="text-nowrap">折扣</th>
             <th width="" class="text-nowrap">到期時間</th>
-            <th width="" class="text-nowrap">狀態</th>
-            <th width="" class="text-nowrap">編輯</th>
+            <th width="80" class="text-nowrap">狀態</th>
+            <th width="120" class="text-nowrap">編輯</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="coupon in coupons" :key="coupon.id"
               class="align-middle">
             <td>{{ coupon.num }}</td>
-            <td>{{ coupon.title }}</td>
+            <td class="text-nowrap">{{ coupon.title }}</td>
             <td class="text-nowrap">{{ coupon.code }}</td>
             <td class="text-right">
               {{ coupon.percent }}%
             </td>
-            <td class="text-right">
+            <td class="text-right text-nowrap">
               <ul class="list-unstyled mb-0">
                 <li>{{ $dayjs.unix(coupon.due_date).tz('Asia/Taipei').format('YYYY-MM-DD') }}</li>
                 <li>{{ $dayjs.unix(coupon.due_date).tz('Asia/Taipei').format('HH:mm:ss') }}</li>
               </ul>
             </td>
-            <td>
+            <td class="text-nowrap">
               <span class="text-success" v-if="coupon.is_enabled">啟用</span>
               <span class="text-muted" v-else>未啟用</span>
             </td>

@@ -1,5 +1,6 @@
 <template>
-  <section class="subscribe bgpx-center bgpy-75 bgsz-cover" style="background-image: url(https://images.unsplash.com/photo-1592114958604-7e1998d8bd8f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80);">
+  <section class="subscribe bgpx-center bgpy-75 bgsz-cover" style="background-image: url(https://images.unsplash.com/photo-1592114958604-7e1998d8bd8f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80);"
+            ref="section">
     <div class="container py-md-2">
       <div class="row justify-content-between align position-relative py-4 py-md-6">
         <div class="col-md-8 col-lg-6 col-xl-5 py-md-1 zindex-1">
@@ -35,6 +36,7 @@
 </template>
 <script>
 import CouponCodeModal from '@/components/modals/CouponCodeModal.vue';
+import windowResizeMixin from '@/mixins/windowResizeMixin';
 
 export default {
   data() {
@@ -44,6 +46,8 @@ export default {
         code: 'LF2.NET',
       },
       userMail: '',
+      sectionHeight: 0,
+      browserWidth: 0,
     };
   },
   components: {
@@ -59,7 +63,11 @@ export default {
       resetForm();
     },
   },
-  mounted() {
+  watch: {
+    browserWidth() {
+      this.sectionHeight = this.$refs.section.offsetHeight;
+    },
   },
+  mixins: [windowResizeMixin],
 };
 </script>

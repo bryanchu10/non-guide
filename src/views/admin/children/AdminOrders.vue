@@ -39,7 +39,7 @@
                 <li>{{ $dayjs.unix(order.create_at).tz('Asia/Taipei').format('HH:mm:ss') }}</li>
               </ul>
             </td>
-            <td>
+            <td class="text-nowrap">
               <span class="text-success" v-if="order.is_paid">已付款</span>
               <span class="text-danger" v-else>未付款</span>
             </td>
