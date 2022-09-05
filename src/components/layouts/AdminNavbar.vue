@@ -3,7 +3,7 @@
         :class="{'fixed-top-animate--hide': isScrollUp}">
     <div class="container-fluid">
       <router-link class="navbar-brand d-flex align-items-center pe-3 pb-2" to="/">
-        <img class="me-2" src="@/assets/logo.svg" alt="logo" width="24" height="24">
+        <img class="me-2" src="@/assets/images/logo.svg" alt="logo" width="24" height="24">
         <h1 class="fs-4 fw-bold mb-0">烏有指南</h1>
       </router-link>
       <button class="navbar-toggler" type="button"
@@ -76,8 +76,8 @@ export default {
     },
   },
   watch: {
-    scrollYPosition(newPoisiton, oldPosition) {
-      if (newPoisiton < oldPosition) {
+    scrollYPosition(newPosition, oldPosition) {
+      if (newPosition < oldPosition) {
         this.isScrollUp = false;
       } else {
         this.isScrollUp = true;

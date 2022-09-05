@@ -14,14 +14,13 @@
 </template>
 
 <script>
-import UserNavbar from '@/components//layouts/UserNavbar.vue';
+import UserNavbar from '@/components/layouts/UserNavbar.vue';
 import SubscribeMe from '@/components/layouts/SubscribeMe.vue';
 import UserFooter from '@/components/layouts/UserFooter.vue';
 import CartOffcanvas from '@/components/layouts/CartOffcanvas.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 
 export default {
-  name: 'ProductsView',
   components: {
     UserNavbar,
     SubscribeMe,

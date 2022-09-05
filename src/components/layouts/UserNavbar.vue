@@ -13,7 +13,7 @@
       </button>
       <router-link class="navbar-brand d-flex align-items-center pe-3 py-0" to="/"
                     :class="{'text-light text-lg-dark': $route.name === 'home'}">
-        <img class="me-2" src="@/assets/logo.svg" alt="logo" width="24" height="24">
+        <img class="me-2" src="@/assets/images/logo.svg" alt="logo" width="24" height="24">
         <h1 class="fs-4 fw-bold lh-base mb-0">烏有指南</h1>
       </router-link>
       <div class="offcanvas offcanvas-start" tabindex="-1" ref="menuOffcanvas"

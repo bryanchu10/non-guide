@@ -1,23 +1,14 @@
 <template>
-  <AdminNavbar/>
-  <router-view/>
-  <ToastList/>
+  <AdminNavbar />
+  <router-view />
 </template>
 
 <script>
 import AdminNavbar from '@/components/layouts/AdminNavbar.vue';
-import ToastList from '@/components/helpers/ToastList.vue';
-import pushMessageState from '@/methods/pushMessageState';
 
 export default {
   components: {
     AdminNavbar,
-    ToastList,
-  },
-  provide() {
-    return {
-      pushMessageState,
-    };
   },
   created() {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexVue3CourseApiToken\s*=\s*([^;]*).*$)|^.*$/, '$1');

@@ -101,7 +101,7 @@ export default {
     },
     isNew: {
       type: Boolean,
-      defautl: false,
+      default: false,
     },
   },
   data() {

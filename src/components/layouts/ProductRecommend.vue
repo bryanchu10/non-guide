@@ -21,7 +21,7 @@
             <img class="h-lv4 h-sm-lv3 h-lg-lv5 h-xl-lv7 h-xxl-lv9
                         w-100 ojf-cover rounded-1 mb-2"
                   :src="product.imageUrl" :alt="product.title">
-            <h3 class="fs-4 fw-bold text-black">{{ product.title }}</h3>
+            <h3 class="fs-5 fs-lg-4 fw-bold text-black">{{ product.title }}</h3>
             <span class="fw-bold text-bold text-black me-2">
               $NT{{ $filters.currency(product.price) }}
             </span>
@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      dragSpeend: 3, // 設定滑鼠點擊中拖曳速度
+      dragSpeed: 3, // 設定滑鼠點擊中拖曳速度
       wheelSpeed: 2, // 設定滑鼠滾輪滾動速度
       browserWidth: 0,
       clientWidth: 0,
@@ -164,7 +164,7 @@ export default {
         return;
       }
       const moveX = e.pageX - this.$refs.carousel.offsetLeft;
-      const scrollMove = (moveX - this.relativeStartX) * this.dragSpeend;
+      const scrollMove = (moveX - this.relativeStartX) * this.dragSpeed;
       this.$refs.carousel.scrollLeft = this.scrollLeftStartX - scrollMove;
     },
     mouseWheel(e) {

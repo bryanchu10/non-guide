@@ -3,7 +3,7 @@
 
   <section class="container mt-6 mb-4 position-relative"
             :class="[productsDataGotten ? 'pt-4' : 'py-7']"
-            :style="{minHeight: sectionHeight + 'px'}">
+            :style="{minHeight: `${sectionHeight}px`}">
     <VueLoading :active="!productsDataGotten" :is-full-page="false"/>
     <div v-if="!filterProducts.length" class="alert alert-warning" role="alert">
       目前您還沒有收藏任何出版品。您可以在個別出版品頁面的資訊卡，點選右上 <i class="bi bi-heart"></i> 符號，將該出版品加入收藏清單。
@@ -78,7 +78,6 @@ import CartOffcanvas from '@/components/layouts/CartOffcanvas.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 
 export default {
-  name: 'FavoriteView',
   inject: ['$filters'],
   data() {
     return {

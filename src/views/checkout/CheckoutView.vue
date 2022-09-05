@@ -2,7 +2,7 @@
   <nav class="navbar py-3">
     <div class="container">
       <router-link class="navbar-brand d-flex align-items-center pe-2 py-0" to="/">
-        <img class="me-2" src="@/assets/logo.svg" alt="logo" width="24" height="24">
+        <img class="me-2" src="@/assets/images/logo.svg" alt="logo" width="24" height="24">
         <h1 class="fs-4 fw-bold lh-base mb-0">烏有指南</h1>
       </router-link>
     </div>

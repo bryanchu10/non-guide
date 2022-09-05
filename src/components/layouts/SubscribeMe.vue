@@ -5,7 +5,7 @@
       <div class="row justify-content-between align position-relative py-4 py-md-6">
         <div class="col-md-8 col-lg-6 col-xl-5 py-md-1 zindex-1">
           <p class="text-white fs-2 fs-md-1 fw-bold mb-4 mb-md-5">
-            訂閱獲得最新出刊情報及特別折扣！
+            訂閱獲得最新情報<br>及特別折扣！
           </p>
           <VeeForm v-slot="{errors}" @submit="subscribe">
             <div class="input-group input-group-lg mb-2">

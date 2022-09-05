@@ -100,7 +100,7 @@
                   </label>
                 </div>
               </div>
-              <span v-if="tempOrder.is_paid" class="">
+              <span v-if="tempOrder.is_paid">
                 付款時間：{{ this.$dayjs.unix(this.tempOrder.paid_date)
                                   .tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss') }}
               </span>

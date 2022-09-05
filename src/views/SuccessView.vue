@@ -2,7 +2,7 @@
   <nav class="navbar fixed-top py-3">
     <div class="container justify-content-center justify-content-sm-start">
       <router-link class="navbar-brand d-flex align-items-center pe-2 py-0" to="/">
-        <img class="me-2" src="@/assets/logo.svg" alt="logo" width="24" height="24">
+        <img class="me-2" src="@/assets/images/logo.svg" alt="logo" width="24" height="24">
         <h1 class="fs-4 fw-bold text-light text-lg-dark lh-base mb-0">烏有指南</h1>
       </router-link>
     </div>
@@ -24,7 +24,7 @@
           </div>
           <div class="col-12 col-sm-8 col-md-6">
             <button class="btn btn-primary btn-lg w-100" type="button"
-                    @click.prevent="this.$router.push('/products/list')">
+                    @click.prevent="$router.push('/products/list')">
               繼續選購
             </button>
           </div>

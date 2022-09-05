@@ -1,13 +1,33 @@
 <template>
-  <div class="toast mb-2" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
+  <div
+    ref="toast"
+    class="toast mb-2"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
     <div class="toast-header">
-      <span :class="`bg-${msg.style}`" class="p-2 rounded me-2 d-inline-block"></span>
+      <span
+        :class="`bg-${msg.style}`"
+        class="p-2 rounded me-2 d-inline-block"
+      />
       <strong class="me-auto">{{ msg.title }}</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      />
     </div>
-    <div class="toast-body" v-if="msg.content">
+    <div
+      v-if="msg.content"
+      class="toast-body"
+    >
       <ul>
-        <li v-for="(item, index) in msg.content" :key="index">
+        <li
+          v-for="(item, index) in msg.content"
+          :key="index"
+        >
           {{ item }}
         </li>
       </ul>
@@ -18,10 +38,14 @@
 import Toast from 'bootstrap/js/dist/toast';
 
 export default {
-  name: 'ToastMessage',
-  props: [
-    'msg',
-  ],
+  props: {
+    msg: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   mounted() {
     const toastEl = this.$refs.toast;
     const toast = new Toast(toastEl, {
