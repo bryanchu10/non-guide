@@ -139,6 +139,7 @@ export default {
       tempProduct: {},
       isNew: false,
       isLoading: false,
+      pageTheme: '出版品',
     };
   },
   created() {
@@ -182,7 +183,7 @@ export default {
         .then((res) => {
           this.$refs.productUpdateModal.hideModal();
           this.getProducts();
-          const title = this.isNew ? '新增' : '更新';
+          const title = this.isNew ? `${this.pageTheme}新增` : `${this.pageTheme}更新`;
           this.$pushMessageState(res, title);
         });
     },
@@ -197,7 +198,7 @@ export default {
         .then((res) => {
           this.$refs.delModal.hideModal();
           this.getProducts();
-          this.$pushMessageState(res, '刪除');
+          this.$pushMessageState(res, `${this.pageTheme}刪除`);
         });
     },
   },

@@ -20,16 +20,21 @@
       />
     </div>
     <div
-      v-if="msg.content"
+      v-if="msg.content || msg.status"
       class="toast-body"
     >
-      <ul>
-        <li
-          v-for="(item, index) in msg.content"
-          :key="index"
-        >
-          {{ item }}
+      <ul class="mb-0">
+        <li v-if="msg.status">
+          HTTP 狀態碼：{{ msg.status }}
         </li>
+        <template v-if="msg.content">
+          <li
+            v-for="(item, index) in msgContentArr"
+            :key="index"
+          >
+            {{ item }}
+          </li>
+        </template>
       </ul>
     </div>
   </div>
@@ -44,6 +49,14 @@ export default {
       default() {
         return {};
       },
+    },
+  },
+  computed: {
+    msgContentArr() {
+      if (Array.isArray(this.msg.content)) {
+        return this.msg.content;
+      }
+      return [this.msg.content];
     },
   },
   mounted() {

@@ -1,10 +1,12 @@
 <template>
   <div
-    id="exampleModal"
+    id="staticBackdrop"
     ref="modal"
     class="modal fade"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="staticBackdropLabel"
     aria-hidden="true"
   >
     <div
@@ -14,7 +16,7 @@
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white fw-bold">
           <h5
-            id="exampleModalLabel"
+            id="staticBackdropLabel"
             class="modal-title"
           >
             <span class="fw-bold">{{ isNew ? '新增' : '編輯' }}出版品</span>
@@ -22,13 +24,17 @@
           <button
             type="button"
             class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
             aria-label="Close"
+            @click="checkBeforeHide"
           />
         </div>
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-4 position-relative">
+              <VueLoading
+                :active="isUploading"
+                :is-full-page="false"
+              />
               <div class="mb-3">
                 <label
                   for="image"
@@ -62,10 +68,6 @@
                 :src="tempProduct.imageUrl"
                 :alt="tempProduct.title"
               >
-              <VueLoading
-                :active="isLoading"
-                :is-full-page="false"
-              />
             </div>
             <div class="col-lg-8">
               <div class="mb-3">
@@ -192,6 +194,13 @@
           <button
             type="button"
             class="btn btn-outline-secondary"
+            @click="abortUploadImg"
+          >
+            取消上傳圖片
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
           >
             取消
@@ -199,6 +208,7 @@
           <button
             type="button"
             class="btn btn-primary"
+            :disabled="isUploading"
             @click="$emit('update-product', tempProduct)"
           >
             確認
@@ -231,8 +241,9 @@ export default {
   data() {
     return {
       tempProduct: {},
-      isLoading: false,
+      isUploading: false,
       modal: {},
+      controller: {},
     };
   },
   watch: {
@@ -240,19 +251,57 @@ export default {
       this.tempProduct = JSON.parse(JSON.stringify(this.product));
     },
   },
+  mounted() {
+    this.$refs.modal.addEventListener('hide.bs.modal', this.hideModalHandler);
+  },
+  beforeUnmount() {
+    this.$refs.modal.removeEventListener('hide.bs.modal', this.hideModalHandler);
+  },
   methods: {
     uploadFile() {
-      this.isLoading = true;
+      this.isUploading = true;
       const uploadedFile = this.$refs.fileInput.files[0];
       const formData = new FormData();
       formData.append('file-to-upload', uploadedFile);
+      this.controller = new AbortController();
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`;
-      this.$http.post(url, formData)
+      this.$http.post(url, formData, { signal: this.controller.signal })
         .then((res) => {
-          this.isLoading = false;
+          console.log(res);
           this.tempProduct.imageUrl = res.data.imageUrl;
-          this.$pushMessageState(res, '刪除');
+          this.$pushMessageState(res, '圖片上傳');
+          this.isUploading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.code === 'ERR_CANCELED') {
+            const abortRes = {
+              data: {
+                message: '圖片上傳已中斷',
+              },
+            };
+            console.log('中斷');
+            this.$pushMessageState(abortRes, '圖片上傳');
+          } else {
+            this.$pushMessageState(err.response, '圖片上傳');
+          }
+          this.isUploading = false;
         });
+    },
+    abortUploadImg() {
+      if (this.isUploading) {
+        this.controller.abort();
+        this.controller = {};
+        this.isUploading = false;
+      }
+    },
+    hideModalHandler() {
+      this.abortUploadImg();
+    },
+    checkBeforeHide() {
+      if (this.isUploading) {
+        // 從這開始寫
+      }
     },
   },
 };

@@ -43,9 +43,12 @@
     </div>
   </section>
 
-  <section class="about container mb-4 mb-md-6 position-relative">
+  <section
+    class="about container mb-4 mb-md-6 position-relative"
+    :class="{'py-7': !articlesReady}"
+  >
     <VueLoading
-      :active="!articlesDataGotten"
+      :active="!articlesReady"
       :is-full-page="false"
     />
     <template
@@ -136,14 +139,14 @@
 
   <section
     class="recommend position-relative"
-    :class="{'py-7': !productsDataGotten}"
+    :class="{'py-7': !productsReady}"
   >
     <VueLoading
-      :active="!productsDataGotten"
+      :active="!productsReady"
       :is-full-page="false"
     />
     <ProductRecommend
-      v-if="productsDataGotten"
+      v-if="productsReady"
       class="py-5 py-md-6"
       :parent-products-data="productsData"
     />
@@ -179,17 +182,18 @@ export default {
     LoginModal,
     ToastList,
   },
+  inject: ['$pushMessageState'],
   data() {
     return {
       recentArticlesNum: 3, // 調整首頁顯示的近期文章數量
 
       articlesData: [],
-      articlesDataGotten: false,
       recentArticles: [],
+      articlesReady: false,
 
       productsData: [],
-      productsDataGotten: false,
       wordChanged: false,
+      productsReady: false,
     };
   },
   created() {
@@ -198,29 +202,28 @@ export default {
   },
   methods: {
     getRecentArticles(page = 1) {
-      this.articlesDataGotten = false;
+      this.articlesReady = false;
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/articles?page=${page}`;
       this.$http.get(api)
         .then((res) => {
-          if (res.data.success) {
-            this.articlesData = res.data.articles;
-            this.recentArticles = this.articlesData.slice(0, this.recentArticlesNum);
-            this.articlesDataGotten = true;
-          }
+          this.articlesData = res.data.articles;
+          this.recentArticles = this.articlesData.slice(0, this.recentArticlesNum);
+          this.articlesReady = true;
         })
         .catch((err) => {
-          console.log(err.response.data.message);
+          this.$pushMessageState(err.response, '取得近期文章');
         });
     },
     getProducts() {
-      this.productsDataGotten = false;
+      this.productsReady = false;
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http.get(api)
         .then((res) => {
-          if (res.data.success) {
-            this.productsData = res.data.products;
-            this.productsDataGotten = true;
-          }
+          this.productsData = res.data.products;
+          this.productsReady = true;
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得推薦出版品');
         });
     },
     changeWords() {
