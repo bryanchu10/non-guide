@@ -150,8 +150,10 @@
         <i class="bi bi-cart-fill" />
         <span
           v-if="cartFilled"
-          class="position-absolute top-20 start-100 translate-middle p-2 bg-danger rounded-circle"
+          class="position-absolute top-20 start-100 translate-middle badge rounded-pill bg-danger
+            fs-7"
         >
+          {{ cartFilled }}
           <span class="visually-hidden">New alerts</span>
         </span>
       </a>
@@ -172,7 +174,7 @@ export default {
       areas: ['全部', '北部', '中部', '南部', '東部', '離島'],
       onSingleProduct: false,
       onSingleArticle: false,
-      cartFilled: false,
+      cartFilled: 0,
       offcanvas: {},
       Collapse: {},
     };
@@ -214,11 +216,7 @@ export default {
       this.areaSelected = area;
     },
     cartFilledHandler(itemAmount) {
-      if (itemAmount === 0) {
-        this.cartFilled = false;
-      } else {
-        this.cartFilled = true;
-      }
+      this.cartFilled = itemAmount;
     },
   },
 };

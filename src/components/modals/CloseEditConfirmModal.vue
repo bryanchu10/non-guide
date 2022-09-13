@@ -1,39 +1,45 @@
 <template>
   <div
+    id="closeEditConfirm"
     ref="modal"
-    class="modal"
+    class="modal fade"
     tabindex="-1"
+    aria-labelledby="closeEditConfirmLabel"
+    aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title">
-            刪除項目
+          <h5
+            id="closeEditConfirmLabel"
+            class="modal-title"
+          >
+            圖片還在上傳當中
           </h5>
           <button
             type="button"
             class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
             aria-label="Close"
+            data-bs-dismiss="modal"
           />
         </div>
         <div class="modal-body">
-          <p>是否刪除<strong class="text-danger">{{ titleStr }}</strong>？（刪除後將無法恢復）</p>
+          確定要結束編輯嗎？圖片可能需要重新上傳。
         </div>
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-outline-secondary"
+            class="btn btn-secondary"
             data-bs-dismiss="modal"
           >
-            取消
+            等待上傳完成
           </button>
           <button
             type="button"
             class="btn btn-danger"
-            @click="$emit('del-item', tempItem)"
+            @click="$emit('close-two-modal')"
           >
-            確認刪除
+            結束編輯
           </button>
         </div>
       </div>
@@ -46,31 +52,11 @@ import modalMixin from '@/mixins/modalMixin';
 
 export default {
   mixins: [modalMixin],
-  props: {
-    item: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-  },
-  emits: ['del-item'],
+  emits: ['close-two-modal'],
   data() {
     return {
-      tempItem: {},
-      titleStr: '',
       modal: {},
     };
-  },
-  watch: {
-    item() {
-      this.tempItem = JSON.parse(JSON.stringify(this.item));
-      if (this.$route.name === 'ordersManage') {
-        this.titleStr = this.item.id;
-      } else {
-        this.titleStr = this.item.title;
-      }
-    },
   },
 };
 </script>

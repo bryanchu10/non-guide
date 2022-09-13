@@ -11,8 +11,14 @@ export default {
   },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
+    // if (this.confirmModal) {
+    //   this.confirmModal = new Modal(this.$refs.confirmModal);
+    // }
   },
   beforeUnmount() {
     this.hideModal();
+    // if (this.confirmModal) {
+    //   this.confirmModal = new Modal(this.$refs.confirmModal);
+    // }
   },
 };

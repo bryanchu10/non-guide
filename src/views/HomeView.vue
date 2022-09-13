@@ -229,11 +229,11 @@ export default {
     changeWords() {
       this.wordChanged = true;
     },
-    showLoginModal() {
-      this.$refs.loginModal.showModal();
-    },
     showCartCanvas() {
       this.$refs.cartOffcanvas.showOffcanvas();
+    },
+    showLoginModal() {
+      this.$refs.loginModal.showModal();
     },
   },
 };

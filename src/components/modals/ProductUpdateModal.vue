@@ -1,12 +1,12 @@
 <template>
   <div
-    id="staticBackdrop"
+    id="productUpdateModal"
     ref="modal"
     class="modal fade"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
     tabindex="-1"
-    aria-labelledby="staticBackdropLabel"
+    aria-labelledby="productUpdateModalLabel"
     aria-hidden="true"
   >
     <div
@@ -16,7 +16,7 @@
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white fw-bold">
           <h5
-            id="staticBackdropLabel"
+            id="productUpdateModalLabel"
             class="modal-title"
           >
             <span class="fw-bold">{{ isNew ? '新增' : '編輯' }}出版品</span>
@@ -64,7 +64,7 @@
               </div>
               <img
                 v-if="tempProduct.imageUrl"
-                class="w-100 h-lv6 ojf-cover"
+                class="w-100 h-lv6 ojf-cover mb-3 mb-lg-0"
                 :src="tempProduct.imageUrl"
                 :alt="tempProduct.title"
               >
@@ -192,8 +192,9 @@
         </div>
         <div class="modal-footer">
           <button
+            v-if="isUploading"
             type="button"
-            class="btn btn-outline-secondary"
+            class="btn btn-outline-secondary me-auto"
             @click="abortUploadImg"
           >
             取消上傳圖片
@@ -201,7 +202,7 @@
           <button
             type="button"
             class="btn btn-outline-secondary"
-            data-bs-dismiss="modal"
+            @click="checkBeforeHide"
           >
             取消
           </button>
@@ -211,18 +212,27 @@
             :disabled="isUploading"
             @click="$emit('update-product', tempProduct)"
           >
-            確認
+            儲存
           </button>
         </div>
       </div>
     </div>
   </div>
+
+  <CloseEditConfirmModal
+    ref="confirmModal"
+    @close-two-modal="closeTwoModal"
+  />
 </template>
 
 <script>
 import modalMixin from '@/mixins/modalMixin';
+import CloseEditConfirmModal from '@/components/modals/CloseEditConfirmModal.vue';
 
 export default {
+  components: {
+    CloseEditConfirmModal,
+  },
   mixins: [modalMixin],
   inject: ['$pushMessageState'],
   props: {
@@ -267,25 +277,32 @@ export default {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`;
       this.$http.post(url, formData, { signal: this.controller.signal })
         .then((res) => {
-          console.log(res);
           this.tempProduct.imageUrl = res.data.imageUrl;
-          this.$pushMessageState(res, '圖片上傳');
           this.isUploading = false;
+          this.$refs.fileInput.value = '';
+          this.$refs.confirmModal.hideModal();
+          // 如果使用者恰好在圖片上傳成功瞬間關閉編輯 modal
+          // 這時候出現上傳圖片成功的訊息
+          // 反而會讓使用者誤會該品項已經更新圖片了
+          // （但實際上和其它欄位一樣，還要儲存該次編輯）
+          // 所以只提示圖片上傳失敗的訊息
+          if (!res.data.success) {
+            this.$pushMessageState(res, '圖片上傳');
+          }
         })
         .catch((err) => {
-          console.log(err);
           if (err.code === 'ERR_CANCELED') {
             const abortRes = {
               data: {
                 message: '圖片上傳已中斷',
               },
             };
-            console.log('中斷');
             this.$pushMessageState(abortRes, '圖片上傳');
           } else {
             this.$pushMessageState(err.response, '圖片上傳');
           }
           this.isUploading = false;
+          this.$refs.fileInput.value = '';
         });
     },
     abortUploadImg() {
@@ -300,8 +317,14 @@ export default {
     },
     checkBeforeHide() {
       if (this.isUploading) {
-        // 從這開始寫
+        this.$refs.confirmModal.showModal();
+      } else {
+        this.hideModal();
       }
+    },
+    closeTwoModal() {
+      this.$refs.confirmModal.hideModal();
+      this.hideModal();
     },
   },
 };

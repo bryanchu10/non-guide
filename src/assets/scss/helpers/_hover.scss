@@ -4,3 +4,11 @@
     transform: scale(1.1);
   }
 }
+
+.hover-filter {
+  &:hover {
+    img {
+      filter: brightness(50%);
+    }
+  }
+}

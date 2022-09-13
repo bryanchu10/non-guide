@@ -1,6 +1,6 @@
 <template>
   <div
-    class="toast-container position-absolute ps-3 pt-3 top-0"
+    class="toast-container position-fixed ps-3 pt-3 top-0"
     role="alert"
     aria-live="assertive"
     aria-atomic="true"
@@ -26,8 +26,6 @@ export default {
   },
   mounted() {
     this.$emitter.on('push-message', (message) => {
-      console.log(message);
-
       const {
         style = 'primary',
         title,
