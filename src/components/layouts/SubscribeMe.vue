@@ -92,6 +92,6 @@ export default {
 
 <style lang="scss" scoped>
 .subscribeImg {
-  background-image: url(@/assets/images/subscribeBg.avif);
+  background-image: url(@/assets/images/subscribeBg.jpg);
 }
 </style>

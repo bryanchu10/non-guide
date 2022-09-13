@@ -241,9 +241,9 @@ export default {
 
 <style lang="scss" scoped>
 .bannerImg {
-  background-image: url(@/assets/images/banner.avif);
+  background-image: url(@/assets/images/banner.jpg);
 }
 .quotationImg {
-  background-image: url(@/assets/images/quotationBg.avif);
+  background-image: url(@/assets/images/quotationBg.jpg);
 }
 </style>

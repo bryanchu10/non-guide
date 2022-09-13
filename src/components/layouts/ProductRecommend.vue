@@ -64,7 +64,7 @@
               <img
                 class="h-lv4 h-sm-lv3 h-lg-lv5 h-xl-lv7 h-xxl-lv9 w-100 ojf-cover
                   filter-brightness-50 rounded-1"
-                src="@/assets/images/more.avif"
+                src="@/assets/images/more.jpg"
                 alt="觀看更多..."
               >
               <i

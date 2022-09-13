@@ -87,6 +87,6 @@ export default {
 
 <style lang="scss" scoped>
 .couponImg {
-  background-image: url(@/assets/images/getCouponBg.avif);
+  background-image: url(@/assets/images/getCouponBg.jpg);
 }
 </style>
