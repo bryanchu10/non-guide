@@ -113,14 +113,13 @@ export default {
       this.$http.post(api, this.user)
         .then((res) => {
           if (res.data.success) {
-            this.isLoading = false;
             const { token, expired } = res.data;
             document.cookie = `hexVue3CourseApiToken=${token}; expires=${new Date(expired)}`;
+            this.isLoading = false;
             this.hideModal();
             this.$router.push('/admin/products');
           } else {
             this.$pushMessageState(res, '登入');
-            console.log(res);
             this.isLoading = false;
           }
         })

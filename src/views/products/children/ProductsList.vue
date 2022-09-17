@@ -1,5 +1,6 @@
 <template>
   <VueLoading :active="isLoading" />
+
   <nav class="navbar bg-light mt-6">
     <div class="container">
       <ul class="navbar-nav flex-row justify-content-between justify-content-md-start w-100">
@@ -29,7 +30,7 @@
   <section class="container pt-4 pt-md-5 mb-4">
     <div class="row d-md-none gx-3 gx-md-4 align-items-md-start">
       <div
-        v-for="product in filterProducts"
+        v-for="(product, index) in filterProducts"
         :key="product.id"
         class="col-6"
       >
@@ -38,12 +39,42 @@
           class="d-block text-decoration-none position-relative mb-4 hover-scale"
           @click.prevent="goProduct(product.id)"
         >
-          <img
-            class="w-100 ojf-cover rounded-1 mb-2"
-            :src="product.imageUrl"
-            :alt="product.title"
-            :style="{height: `${mobileImgHeight}px`}"
-          >
+          <div class="mb-2 position-relative">
+            <img
+              class="w-100 ojf-cover rounded-1 mb-2"
+              :src="product.imageUrl"
+              :alt="product.title"
+              :style="{height: `${mobileImgHeight}px`}"
+            >
+            <small
+              v-if="product.price !== product.origin_price"
+              class="text-white fw-bold position-absolute top-0 end-0 py-2 pe-2"
+            >
+              Sale
+            </small>
+            <div
+              class="btn-block-filter d-flex position-absolute bottom-0 start-0 end-0 py-2 ps-3
+                rounded-1"
+            >
+              <button
+                :ref="setItemRef"
+                class="btn btn-outline-light btn--cart-plus rounded-circle border border-2
+                  me-2"
+                @click.stop.prevent="addOne(product.id, index)"
+              >
+                <i class="bi bi-cart-plus fs-5" />
+              </button>
+              <button
+                class="btn btn-outline-light btn--heart rounded-circle border border-2 pb-1"
+                @click.stop.prevent="toggleFavorites(product.id)"
+              >
+                <i
+                  class="bi fs-5"
+                  :class="[isFavorite(product.id) ? 'bi-heart-fill' : 'bi-heart']"
+                />
+              </button>
+            </div>
+          </div>
           <h3 class="fs-6 fs-sm-5 fw-bold text-black text-truncate">{{ product.title }}</h3>
           <small class="fw-bold text-bold text-black me-2">
             $NT{{ $filters.currency(product.price) }}
@@ -53,12 +84,6 @@
             class="fw-bold text-bold text-secondary text-decoration-line-through"
           >
             $NT{{ $filters.currency(product.origin_price) }}
-          </small>
-          <small
-            v-if="product.price !== product.origin_price"
-            class="text-white fw-bold position-absolute top-0 end-0 py-2 pe-2"
-          >
-            Sale
           </small>
         </a>
       </div>
@@ -75,33 +100,40 @@
       >
         <a
           href="#"
-          class="d-block text-decoration-none position-relative mb-5 hover-filter"
+          class="d-block text-decoration-none mb-5 hover-scale"
           @click.prevent="goProduct(product.id)"
         >
           <div class="mb-2 position-relative">
             <img
-              class="w-100 ojf-cover rounded-1"
+              class="w-100 rounded-1"
               :src="product.imageUrl"
               :alt="product.title"
             >
+            <span
+              v-if="product.price !== product.origin_price"
+              class="text-block-filter text-white fw-bold text-end position-absolute top-0 start-0
+                end-0 py-2 pe-3"
+            >
+              On Sale
+            </span>
             <div
-              class="d-flex position-absolute top-50 start-50 translate-middle"
+              class="btn-block-filter d-flex position-absolute bottom-0 start-0 end-0 py-2 ps-3
+                rounded-1"
             >
               <button
-                :ref="setItemRef"
+                :ref="setMasonryItemRef"
                 class="btn btn-outline-light btn--cart-plus rounded-circle border border-2
                   me-2"
-                :class="{show: status.loadingItem === product.id}"
                 @click.stop.prevent="addOne(product.id, index)"
               >
-                <i class="bi bi-cart-plus fs-4" />
+                <i class="bi bi-cart-plus fs-5" />
               </button>
               <button
-                class="btn btn-outline-light btn--heart rounded-circle border border-2"
+                class="btn btn-outline-light btn--heart rounded-circle border border-2 pb-1"
                 @click.stop.prevent="toggleFavorites(product.id)"
               >
                 <i
-                  class="bi fs-4"
+                  class="bi fs-5"
                   :class="[isFavorite(product.id) ? 'bi-heart-fill' : 'bi-heart']"
                 />
               </button>
@@ -116,12 +148,6 @@
             class="fw-bold text-bold text-secondary text-decoration-line-through"
           >
             $NT{{ $filters.currency(product.origin_price) }}
-          </span>
-          <span
-            v-if="product.price !== product.origin_price"
-            class="text-white fw-bold position-absolute top-0 end-0 py-3 pe-3"
-          >
-            On Sale
           </span>
         </a>
       </div>
@@ -164,10 +190,8 @@ export default {
       browserWidth: 0,
       isLoading: true,
       favorites: [],
-      status: {
-        loadingItem: '',
-      },
       itemRefs: [],
+      itemMasonryRefs: [],
     };
   },
   computed: {
@@ -217,10 +241,14 @@ export default {
   },
   beforeUpdate() {
     this.itemRefs = [];
+    this.itemMasonryRefs = [];
   },
   updated() {
-    this.masonry = new Masonry(this.$refs.masonryRow, {
-      percentPosition: true,
+    this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
+      this.masonry = new Masonry(this.$refs.masonryRow, {
+        percentPosition: true,
+      });
+      this.isLoading = false;
     });
   },
   beforeUnmount() {
@@ -284,13 +312,11 @@ export default {
       return false;
     },
     addOne(id, index) {
-      console.log(id, index, this.itemRefs[index]);
       const productInfo = {
         product_id: id,
         qty: 1,
       };
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`;
-      this.status.loadingItem = id;
       this.$http.post(api, { data: productInfo })
         .then((res) => {
           if (res.data.success) {
@@ -298,7 +324,6 @@ export default {
           } else {
             this.$pushMessageState(res, '加入購物車');
           }
-          this.status.loadingItem = '';
         })
         .catch((err) => {
           this.$pushMessageState(err.response, '加入購物車');
@@ -306,13 +331,23 @@ export default {
       const el = document.createElement('div');
       el.textContent = '+1';
       el.setAttribute('class', 'plus-one animate__animated animate__fadeOutUp');
-      this.itemRefs[index].appendChild(el);
-      setTimeout(() => {
-        this.itemRefs[index].removeChild(el);
-      }, 1000);
+      if (this.browserWidth < 768) {
+        this.itemRefs[index].appendChild(el);
+        setTimeout(() => {
+          this.itemRefs[index].removeChild(el);
+        }, 1000);
+      } else {
+        this.itemMasonryRefs[index].appendChild(el);
+        setTimeout(() => {
+          this.itemMasonryRefs[index].removeChild(el);
+        }, 1000);
+      }
     },
     setItemRef(el) {
       this.itemRefs.push(el);
+    },
+    setMasonryItemRef(el) {
+      this.itemMasonryRefs.push(el);
     },
   },
 };
@@ -321,51 +356,24 @@ export default {
 <style lang="scss" scoped>
 .btn--cart-plus,
 .btn--heart {
-  display: none;
-  width: 54px;
-  height: 54px;
+  display: block;
+  width: 48px;
+  height: 48px;
 }
-
-.hover-filter {
-  &:hover {
-    .btn--cart-plus,
-    .btn--heart {
-      display: block;
-    }
-  }
-}
-
-// .btn--cart-plus {
-//   position: relative;
-//   &::after {
-//     opacity: 0;
-//     position: absolute;
-//     content: '+1';
-//     font-size: 1.5rem;
-//     font-weight: bold;
-//     color: yellow;
-//     top: -48px;
-//     left: 12px;
-//   }
-//   &.show{
-//     &::after {
-//       opacity: 1;
-//       top: -96px;
-//       transition: top 2s ease;
-//     }
-//   }
-// }
 
 .btn--cart-plus {
   position: relative;
   :deep(.plus-one) {
-    opacity: 1;
     position: absolute;
     font-size: 1.5rem;
     font-weight: bold;
     color: yellow;
-    top: -48px;
-    left: 12px;
+    top: -42px;
+    left: 8px;
   }
+}
+
+.btn-block-filter {
+  background: linear-gradient(rgba(#000000, 0), rgba(#000000, 1) 70%)
 }
 </style>
