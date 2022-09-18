@@ -31,8 +31,7 @@
         </div>
       </div>
       <div
-        class="col-md-5 position-absolute top-90 top-md-50 end-md-0
-                  translate-middle-md-y"
+        class="col-md-5 position-absolute top-90 top-md-50 end-md-0 translate-middle-md-y"
       >
         <div
           ref="infoCard"
@@ -106,8 +105,7 @@
                 <input
                   v-model="productAmount"
                   type="number"
-                  class="form-control text-center bg-tertiary border-0
-                                input-browser-style-none"
+                  class="form-control text-center bg-tertiary border-0 input-browser-style-none"
                   aria-label="Example text with button addon"
                   aria-describedby="button-addon1"
                   :disabled="status.loadingItem === product.id"
@@ -198,7 +196,7 @@ export default {
     ProductRecommend,
   },
   mixins: [windowResizeMixin],
-  inject: ['$emitter', '$filters'],
+  inject: ['$emitter', '$filters', '$pushMessageState'],
   props: {
     parentProductsData: {
       type: Array,
@@ -245,8 +243,13 @@ export default {
       this.$http.get(api)
         .then((res) => {
           if (res.data.success) {
-            this.product = JSON.parse(JSON.stringify(res.data.product));
+            this.product = res.data.product;
+          } else {
+            this.$pushMessageState(res, '取得單一商品');
           }
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得單一商品');
         });
     },
     getProducts() {
@@ -276,9 +279,16 @@ export default {
       this.$http.post(api, { data: productInfo })
         .then((res) => {
           if (res.data.success) {
-            this.status.loadingItem = '';
             this.$emitter.emit('addCart');
+          } else {
+            this.$pushMessageState(res, '加入購物車');
           }
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '加入購物車');
+        })
+        .finally(() => {
+          this.status.loadingItem = '';
         });
     },
     changeProductAmount(changeAmount) {

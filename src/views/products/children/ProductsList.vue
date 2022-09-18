@@ -244,12 +244,17 @@ export default {
     this.itemMasonryRefs = [];
   },
   updated() {
-    this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
-      this.masonry = new Masonry(this.$refs.masonryRow, {
-        percentPosition: true,
-      });
+    if (this.browserWidth < 768) {
       this.isLoading = false;
-    });
+    } else {
+      this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
+        this.masonry = new Masonry(this.$refs.masonryRow, {
+          percentPosition: true,
+        });
+        this.isLoading = false;
+      });
+    }
+    // 處理 masonry null 問題
   },
   beforeUnmount() {
     this.$emitter.off('areaFromNavbar', this.areaFromNavbarHandler);
