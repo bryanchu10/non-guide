@@ -1,6 +1,4 @@
 <template>
-  <VueLoading :active="isLoading" />
-
   <nav class="navbar bg-light mt-6">
     <div class="container">
       <ul class="navbar-nav flex-row justify-content-between justify-content-md-start w-100">
@@ -27,7 +25,11 @@
     </div>
   </nav>
 
-  <section class="container pt-4 pt-md-5 mb-4">
+  <section class="container pt-4 pt-md-5 mb-4 position-relative">
+    <VueLoading
+      :active="isLoading"
+      :is-full-page="false"
+    />
     <div class="row d-md-none gx-3 gx-md-4 align-items-md-start">
       <div
         v-for="(product, index) in filterProducts"
@@ -218,6 +220,15 @@ export default {
     },
     areaSelected(area) {
       this.$emitter.emit('areaFromList', area);
+      this.$nextTick(() => {
+        this.masonry = new Masonry(this.$refs.masonryRow, {
+          percentPosition: true,
+        });
+        imagesLoaded(this.$refs.masonryRow, () => {
+          this.masonry.layout();
+          this.isLoading = false;
+        });
+      });
     },
   },
   created() {
@@ -235,18 +246,16 @@ export default {
     this.masonry = new Masonry(this.$refs.masonryRow, {
       percentPosition: true,
     });
-    this.isLoading = false;
+    imagesLoaded(this.$refs.masonryRow, () => {
+      this.masonry.layout();
+      this.$nextTick(() => {
+        this.isLoading = false;
+      });
+    });
   },
   beforeUpdate() {
     this.itemRefs = [];
     this.itemMasonryRefs = [];
-  },
-  updated() {
-    console.log('updated');
-    imagesLoaded(this.$refs.masonryRow, () => {
-      this.masonry.layout();
-    });
-    // 問題不是出在imagedLoaded 上，而是 Vue 畫面更新機制
   },
   beforeUnmount() {
     this.$emitter.off('areaFromNavbar', this.areaFromNavbarHandler);

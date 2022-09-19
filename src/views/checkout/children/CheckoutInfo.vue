@@ -229,9 +229,6 @@ export default {
   created() {
     this.getCounty();
   },
-  mounted() {
-    // this.getCounty();
-  },
   methods: {
     isMobile(value) {
       const phoneNumber = /^(09)[0-9]{8}$/;
@@ -255,6 +252,7 @@ export default {
     },
     getTown() {
       const countyIndex = this.countyDataArr.findIndex((el) => el.countyname === this.county);
+      this.townDataArr = []; // 資料讀接
       if (countyIndex >= 0) {
         const countyCode = this.countyDataArr[countyIndex].countycode;
         const api = `https://api.nlsc.gov.tw/other/ListTown/${countyCode}`;

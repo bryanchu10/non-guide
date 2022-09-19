@@ -1,4 +1,8 @@
 <template>
+  <VueLoading
+    :active="isLoading"
+    :is-full-page="false"
+  />
   <section class="container mt-6 mb-5 mb-md-6">
     <div
       class="row position-relative mb-md-5"
@@ -87,7 +91,7 @@
               />
             </a>
           </nav>
-          <h2 class="fs-2 fs-md-1 fw-bold lh-base mb-4">
+          <h2 class="fs-3 fs-md-4 fs-lg-2 fw-bold lh-base mb-4">
             {{ product.title }}
           </h2>
           <div class="row">
@@ -219,6 +223,7 @@ export default {
       browserWidth: 0,
       isFavorite: false,
       favorites: [],
+      isLoading: true,
     };
   },
   watch: {
@@ -244,6 +249,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.product = res.data.product;
+            this.isLoading = false;
           } else {
             this.$pushMessageState(res, '取得單一商品');
           }

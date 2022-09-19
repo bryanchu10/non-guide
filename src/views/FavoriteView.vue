@@ -156,7 +156,7 @@
 <script>
 import windowResizeMixin from '@/mixins/windowResizeMixin';
 import Masonry from 'masonry-layout/masonry';
-import ImagesLoaded from 'imagesloaded/imagesloaded';
+import imagesLoaded from 'imagesloaded/imagesloaded';
 
 import UserNavbar from '@/components/layouts/UserNavbar.vue';
 import SubscribeMe from '@/components/layouts/SubscribeMe.vue';
@@ -207,23 +207,16 @@ export default {
   created() {
     this.getProducts();
   },
-  mounted() {
-    this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
-      this.masonry = new Masonry(this.$refs.masonryRow, {
-        percentPosition: true,
-      });
-    });
-  },
   beforeUpdate() {
     this.itemRefs = [];
     this.itemMasonryRefs = [];
   },
   updated() {
-    this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
-      this.masonry = new Masonry(this.$refs.masonryRow, {
-        percentPosition: true,
-      });
-      this.isLoading = false;
+    this.masonry = new Masonry(this.$refs.masonryRow, {
+      percentPosition: true,
+    });
+    imagesLoaded(this.$refs.masonryRow, () => {
+      this.masonry.layout();
     });
   },
   methods: {
@@ -236,6 +229,9 @@ export default {
         })
         .catch((err) => {
           this.$pushMessageState(err.response, '取得商品列表');
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     getFavorites() {

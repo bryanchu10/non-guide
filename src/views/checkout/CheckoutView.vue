@@ -1,4 +1,7 @@
 <template>
+  <VueLoading
+    :active="isLoading"
+  />
   <nav
     ref="nav"
     class="navbar py-3"
@@ -110,6 +113,7 @@ export default {
       browserWidth: 0,
       browserHeight: 0,
       sectionHeight: 0,
+      isLoading: true,
     };
   },
   watch: {
@@ -152,8 +156,9 @@ export default {
             if (!res.data.data.carts.length) {
               this.$refs.hintModal.showModal();
             }
-            this.orderSummaryData = JSON.parse(JSON.stringify(res.data.data.carts));
+            this.orderSummaryData = res.data.data.carts;
             this.orderSummaryTotal = res.data.data.final_total;
+            this.isLoading = false;
           }
         })
         .catch((err) => {
@@ -172,6 +177,7 @@ export default {
               this.receiverMessage = res.data.order.message;
             }
           }
+          this.isLoading = false;
         })
         .catch((err) => {
           this.$pushMessageState(err.response, '取得訂單');
