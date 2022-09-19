@@ -158,7 +158,7 @@
 <script>
 import windowResizeMixin from '@/mixins/windowResizeMixin';
 import Masonry from 'masonry-layout/masonry';
-import ImagesLoaded from 'imagesloaded/imagesloaded';
+import imagesLoaded from 'imagesloaded/imagesloaded';
 
 export default {
   mixins: [windowResizeMixin],
@@ -232,29 +232,21 @@ export default {
   },
   mounted() {
     this.$emitter.on('areaFromNavbar', this.areaFromNavbarHandler);
-    this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
-      this.masonry = new Masonry(this.$refs.masonryRow, {
-        percentPosition: true,
-      });
-      this.isLoading = false;
+    this.masonry = new Masonry(this.$refs.masonryRow, {
+      percentPosition: true,
     });
+    this.isLoading = false;
   },
   beforeUpdate() {
     this.itemRefs = [];
     this.itemMasonryRefs = [];
   },
   updated() {
-    if (this.browserWidth < 768) {
-      this.isLoading = false;
-    } else {
-      this.imagesLoaded = new ImagesLoaded(this.$refs.masonryRow, () => {
-        this.masonry = new Masonry(this.$refs.masonryRow, {
-          percentPosition: true,
-        });
-        this.isLoading = false;
-      });
-    }
-    // 處理 masonry null 問題
+    console.log('updated');
+    imagesLoaded(this.$refs.masonryRow, () => {
+      this.masonry.layout();
+    });
+    // 問題不是出在imagedLoaded 上，而是 Vue 畫面更新機制
   },
   beforeUnmount() {
     this.$emitter.off('areaFromNavbar', this.areaFromNavbarHandler);
