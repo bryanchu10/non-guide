@@ -1,4 +1,8 @@
 <template>
+  <VueLoading
+    :active="isLoading"
+    :is-full-page="false"
+  />
   <VeeForm
     v-slot="{errors}"
     @submit="submitOrder"
@@ -224,6 +228,7 @@ export default {
       rawAddress: '',
       countyDataArr: [],
       townDataArr: [],
+      isLoading: false,
     };
   },
   created() {
@@ -252,7 +257,7 @@ export default {
     },
     getTown() {
       const countyIndex = this.countyDataArr.findIndex((el) => el.countyname === this.county);
-      this.townDataArr = []; // 資料讀接
+      this.townDataArr = [];
       if (countyIndex >= 0) {
         const countyCode = this.countyDataArr[countyIndex].countycode;
         const api = `https://api.nlsc.gov.tw/other/ListTown/${countyCode}`;
@@ -274,6 +279,7 @@ export default {
       this.form.user.address = this.county + this.town + this.rawAddress;
     },
     submitOrder() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/order`;
       const form = JSON.parse(JSON.stringify(this.form));
       this.$http.post(api, { data: form })
@@ -286,6 +292,9 @@ export default {
         })
         .catch((err) => {
           this.$pushMessageState(err.response, '建立訂單');
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

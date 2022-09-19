@@ -1,4 +1,8 @@
 <template>
+  <VueLoading
+    :active="isLoading"
+    :is-full-page="false"
+  />
   <h3 class="fs-5">
     資訊
   </h3>
@@ -152,6 +156,7 @@ export default {
         county: '',
         countyElse: '',
       },
+      isLoading: false,
     };
   },
   watch: {
@@ -165,6 +170,7 @@ export default {
       this.separateAddress.countyElse = this.parentReceiverInfo.address.slice(3);
     },
     payOrder() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/pay/${this.$route.params.orderId}`;
       this.$http.post(api)
         .then(() => {
@@ -172,6 +178,9 @@ export default {
         })
         .catch((err) => {
           this.$pushMessageState(err.response, '結帳');
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },
