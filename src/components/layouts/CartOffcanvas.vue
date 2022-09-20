@@ -171,8 +171,7 @@
               <span v-if="status.loadingItem !== 'addingCoupon'">套用優惠</span>
               <div
                 v-else
-                class="spinner-border spinner-border-sm
-                          text-secondary align-baseline"
+                class="spinner-border spinner-border-sm text-secondary align-baseline"
                 role="status"
               >
                 <span class="visually-hidden">Loading...</span>

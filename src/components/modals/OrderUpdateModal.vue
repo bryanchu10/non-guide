@@ -207,7 +207,7 @@
                 </div>
                 <hr>
               </template>
-              <div class="">
+              <div>
                 <div class="form-check">
                   <input
                     id="is_paid"
