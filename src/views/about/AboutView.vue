@@ -1,4 +1,7 @@
 <template>
+  <VueLoading
+    :active="!articlesDataGotten"
+  />
   <UserNavbar @show-offcanvas="showCartCanvas" />
   <router-view
     v-if="articlesDataGotten"
