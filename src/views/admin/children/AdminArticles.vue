@@ -147,6 +147,7 @@ export default {
       tempArticle: {},
       isNew: false,
       isLoading: false,
+      pageTheme: '文章',
     };
   },
   computed: {
@@ -161,11 +162,12 @@ export default {
       this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
+          this.articles = res.data.articles;
+          this.pagination = res.data.pagination;
           this.isLoading = false;
-          if (res.data.success) {
-            this.articles = JSON.parse(JSON.stringify(res.data.articles));
-            this.pagination = { ...res.data.pagination };
-          }
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得文章列表');
         });
     },
     openModal(isNew, article) {
@@ -179,9 +181,9 @@ export default {
         this.isLoading = true;
         this.$http.get(api)
           .then((res) => {
-            this.isLoading = false;
             this.tempArticle = JSON.parse(JSON.stringify(article));
             this.tempArticle.content = res.data.article.content;
+            this.isLoading = false;
             this.$refs.articleUpdateModal.showModal();
           });
       }
@@ -203,7 +205,11 @@ export default {
         .then((res) => {
           this.$refs.articleUpdateModal.hideModal();
           this.getArticles();
-          this.$pushMessageState(res, '更新');
+          const title = this.isNew ? `${this.pageTheme}新增` : `${this.pageTheme}更新`;
+          this.$pushMessageState(res, title);
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '更新單一文章');
         });
     },
     openDelModal(article) {
@@ -218,6 +224,9 @@ export default {
           this.$refs.delModal.hideModal();
           this.getArticles();
           this.$pushMessageState(res, '刪除');
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '刪除單一文章');
         });
     },
   },

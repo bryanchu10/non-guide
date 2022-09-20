@@ -136,6 +136,7 @@
 
 <script>
 export default {
+  inject: ['$pushMessageState'],
   props: {
     parentReceiverInfo: {
       type: Object,

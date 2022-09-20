@@ -223,7 +223,7 @@ export default {
           this.productsReady = true;
         })
         .catch((err) => {
-          this.$pushMessageState(err.response, '取得推薦出版品');
+          this.$pushMessageState(err.response, '取得商品列表');
         });
     },
     changeWords() {

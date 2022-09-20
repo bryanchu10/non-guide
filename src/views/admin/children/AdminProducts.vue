@@ -151,11 +151,12 @@ export default {
       this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
+          this.products = res.data.products;
+          this.pagination = res.data.pagination;
           this.isLoading = false;
-          if (res.data.success) {
-            this.products = JSON.parse(JSON.stringify(res.data.products));
-            this.pagination = { ...res.data.pagination };
-          }
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得商品列表');
         });
     },
     openModal(isNew, product) {
@@ -185,6 +186,9 @@ export default {
           this.getProducts();
           const title = this.isNew ? `${this.pageTheme}新增` : `${this.pageTheme}更新`;
           this.$pushMessageState(res, title);
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '更新單一商品');
         });
     },
     openDelModal(product) {
@@ -199,6 +203,9 @@ export default {
           this.$refs.delModal.hideModal();
           this.getProducts();
           this.$pushMessageState(res, `${this.pageTheme}刪除`);
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '刪除單一商品');
         });
     },
   },

@@ -1,16 +1,24 @@
 <template>
-  <ArticleSection :parent-articles-data="parentArticlesData"/>
+  <ArticleSection :parent-articles-data="parentArticlesData" />
   <div class="container mb-4 mb-md-6">
     <div class="row justify-content-center">
       <div class="col-10 col-md-8 d-flex">
-        <a v-if="previousArticleId" href="#" aria-label="previous"
-            @click.prevent="this.$router.push(`/about/${previousArticleId}`)">
-          <i class="bi bi-arrow-left-circle-fill fs-2 opacity-75"></i>
+        <a
+          v-if="previousArticleId"
+          href="#"
+          aria-label="previous"
+          @click.prevent="$router.push(`/about/${previousArticleId}`)"
+        >
+          <i class="bi bi-arrow-left-circle-fill fs-2 opacity-75" />
         </a>
-        <a v-if="nextArticleId" href="#" aria-label="next"
-            class="ms-auto"
-            @click.prevent="this.$router.push(`/about/${nextArticleId}`)">
-          <i class="bi bi-arrow-right-circle-fill fs-2 opacity-75"></i>
+        <a
+          v-if="nextArticleId"
+          href="#"
+          aria-label="next"
+          class="ms-auto"
+          @click.prevent="$router.push(`/about/${nextArticleId}`)"
+        >
+          <i class="bi bi-arrow-right-circle-fill fs-2 opacity-75" />
         </a>
       </div>
     </div>
@@ -21,6 +29,9 @@
 import ArticleSection from '@/components/layouts/ArticleSection.vue';
 
 export default {
+  components: {
+    ArticleSection,
+  },
   props: {
     parentArticlesData: {
       type: Array,
@@ -29,14 +40,14 @@ export default {
       },
     },
   },
-  components: {
-    ArticleSection,
-  },
   data() {
     return {
       previousArticleId: '',
       nextArticleId: '',
     };
+  },
+  created() {
+    this.getNeighborArticleId();
   },
   methods: {
     getNeighborArticleId() {
@@ -49,9 +60,6 @@ export default {
       this.previousArticleId = articleIdsArr[currIndex - 1];
       this.nextArticleId = articleIdsArr[currIndex + 1];
     },
-  },
-  created() {
-    this.getNeighborArticleId();
   },
 };
 </script>

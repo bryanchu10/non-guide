@@ -10,6 +10,7 @@ export default {
   components: {
     AdminNavbar,
   },
+  inject: ['$pushMessageState'],
   created() {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexVue3CourseApiToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
     this.$http.defaults.headers.common.Authorization = token;
@@ -19,6 +20,9 @@ export default {
         if (!res.data.success) {
           this.$router.push('/');
         }
+      }).catch((err) => {
+        this.$pushMessageState(err.response, '登入狀態檢查');
+        this.$router.push('/');
       });
   },
 };
