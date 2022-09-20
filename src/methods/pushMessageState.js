@@ -11,6 +11,7 @@ export default (res, title = '更新') => {
       style: 'danger',
       title: `${title}失敗`,
       content: res.data.message,
+      status: res.status,
     });
   }
 };

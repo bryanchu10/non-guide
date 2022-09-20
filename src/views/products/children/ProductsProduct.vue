@@ -1,97 +1,161 @@
 <template>
+  <VueLoading
+    :active="isLoading"
+    :is-full-page="false"
+  />
   <section class="container mt-6 mb-5 mb-md-6">
-    <div class="row position-relative mb-md-5"
-          :style="{ 'margin-bottom': `${infoCardHeight-12}px` }">
-      <div class="col d-md-none h-lv8 bgsz-cover bgp-center position-relative"
-          :style="{ 'background-image': `url(${product.imageUrl ? product.imageUrl : ''})` }">
-        <span v-if="product.price !== product.origin_price"
-              class="position-absolute end-0 text-white fw-bold p-3">
-                On Sale
+    <div
+      class="row position-relative mb-md-5"
+      :style="{ 'margin-bottom': `${infoCardHeight-12}px` }"
+    >
+      <div
+        class="col d-md-none h-lv8 bgsz-cover bgp-center position-relative"
+        :style="{ 'background-image': `url(${product.imageUrl ? product.imageUrl : ''})` }"
+      >
+        <span
+          v-if="product.price !== product.origin_price"
+          class="position-absolute end-0 text-white fw-bold p-3"
+        >
+          On Sale
         </span>
       </div>
       <div class="d-none d-md-block col-md-8">
         <div class="position-relative">
-          <img class="h-lv10 w-100 ojf-cover rounded-1"
-                :src="product.imageUrl" :alt="product.title">
-          <span v-if="product.price !== product.origin_price"
-                class="position-absolute start-0 text-white fw-bold p-4">
-                  On Sale
+          <img
+            class="h-lv10 w-100 ojf-cover rounded-1"
+            :src="product.imageUrl"
+            :alt="product.title"
+          >
+          <span
+            v-if="product.price !== product.origin_price"
+            class="position-absolute start-0 text-white fw-bold p-4"
+          >
+            On Sale
           </span>
         </div>
       </div>
-      <div class="col-md-5 position-absolute top-90 top-md-50 end-md-0
-                  translate-middle-md-y">
-        <div class="p-3 py-md-4 ps-md-4 pe-md-0 bg-white rounded-1"
-              ref="infoCard">
-          <nav aria-label="breadcrumb" class="d-flex">
+      <div
+        class="col-md-5 position-absolute top-90 top-md-50 end-md-0 translate-middle-md-y"
+      >
+        <div
+          ref="infoCard"
+          class="p-3 py-md-4 ps-md-4 pe-md-0 bg-white rounded-1"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="d-flex"
+          >
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
-                <router-link to="/" class="text-decoration-none link-secondary">
+                <router-link
+                  to="/"
+                  class="text-decoration-none link-secondary"
+                >
                   首頁
                 </router-link>
               </li>
               <li class="breadcrumb-item">
-                <router-link to="/products/list" class="text-decoration-none link-secondary">
+                <router-link
+                  to="/products/list"
+                  class="text-decoration-none link-secondary"
+                >
                   出版品
                 </router-link>
               </li>
-              <li class="breadcrumb-item" aria-current="page">
-                <a href="#" class="text-decoration-none link-secondary"
-                  @click.prevent="goProductsPage(product.category)">
+              <li
+                class="breadcrumb-item"
+                aria-current="page"
+              >
+                <a
+                  href="#"
+                  class="text-decoration-none link-secondary"
+                  @click.prevent="goProductsPage(product.category)"
+                >
                   {{ product.category }}
                 </a>
               </li>
             </ol>
-            <a href="#" class="link-secondary ms-auto" aria-label="加入最愛"
-                @click.prevent="toggleFavorities">
-              <i v-if="isfavorite" class="bi bi-heart-fill text-primary"></i>
-              <i v-else class="bi bi-heart"></i>
+            <a
+              href="#"
+              class="link-secondary ms-auto"
+              aria-label="加入最愛"
+              @click.prevent="toggleFavorites"
+            >
+              <i
+                v-if="isFavorite"
+                class="bi bi-heart-fill text-primary"
+              />
+              <i
+                v-else
+                class="bi bi-heart"
+              />
             </a>
           </nav>
-          <h2 class="fs-2 fs-md-1 fw-bold lh-base mb-4">{{ product.title }}</h2>
+          <h2 class="fs-3 fs-md-4 fs-lg-2 fw-bold lh-base mb-4">
+            {{ product.title }}
+          </h2>
           <div class="row">
             <div class="col-7 col-lg-6 col-xl-5 order-xl-2">
               <div class="input-group input-group-lg mb-3 mb-lg-0">
-                <button class="btn btn-tertiary" type="button" id="button-addon1"
-                        @click="changeProductAmount(-1)"
-                        :disabled="status.loadingItem === product.id">
-                  <i class="bi bi-dash-lg"></i>
+                <button
+                  id="button-addon1"
+                  class="btn btn-tertiary"
+                  type="button"
+                  :disabled="status.loadingItem === product.id"
+                  @click="changeProductAmount(-1)"
+                >
+                  <i class="bi bi-dash-lg" />
                 </button>
-                <input type="number"
-                        class="form-control text-center bg-tertiary border-0
-                                input-browser-style-none"
-                        aria-label="Example text with button addon"
-                        aria-describedby="button-addon1"
-                        v-model="productAmount"
-                        @change="productAmountChanged(productAmount)"
-                        :disabled="status.loadingItem === product.id">
-                <button class="btn btn-tertiary" type="button" id="button-addon2"
-                        @click="changeProductAmount(1)"
-                        :disabled="status.loadingItem === product.id">
-                  <i class="bi bi-plus-lg"></i>
+                <input
+                  v-model="productAmount"
+                  type="number"
+                  class="form-control text-center bg-tertiary border-0 input-browser-style-none"
+                  aria-label="Example text with button addon"
+                  aria-describedby="button-addon1"
+                  :disabled="status.loadingItem === product.id"
+                  @change="productAmountChanged(productAmount)"
+                >
+                <button
+                  id="button-addon2"
+                  class="btn btn-tertiary"
+                  type="button"
+                  :disabled="status.loadingItem === product.id"
+                  @click="changeProductAmount(1)"
+                >
+                  <i class="bi bi-plus-lg" />
                 </button>
               </div>
             </div>
             <div class="col-5 col-lg-6 col-xl-12 order-xl-1">
               <div class="d-flex flex-column">
-                <span v-if="product.origin_price !== product.price"
-                      class="text-secondary text-decoration-line-through text-end">
+                <span
+                  v-if="product.origin_price !== product.price"
+                  class="text-secondary text-decoration-line-through text-end"
+                >
                   NT${{ $filters.currency(product.origin_price) }}
                 </span>
-                <span class="fs-4 fw-bold text-end mb-3 mb-xl-4"
-                      :class="{'mt-4': product.origin_price === product.price}">
+                <span
+                  class="fs-4 fw-bold text-end mb-3 mb-xl-4"
+                  :class="{'mt-4': product.origin_price === product.price}"
+                >
                   NT${{ $filters.currency(product.price) }}
                 </span>
               </div>
             </div>
             <div class="col-xl-7 order-xl-3">
-              <button class="btn btn-lg btn-primary w-100"
-                      type="button" id="button-addon3"
-                      @click.prevent="addCart(product.id)"
-                      :disabled="status.loadingItem === product.id || !productAmount">
-                <span class="spinner-grow spinner-grow-sm align-baseline me-2"
-                      role="status" aria-hidden="true"
-                      v-if="status.loadingItem === product.id"></span>
+              <button
+                id="button-addon3"
+                class="btn btn-lg btn-primary w-100"
+                type="button"
+                :disabled="status.loadingItem === product.id || !productAmount"
+                @click.prevent="addCart(product.id)"
+              >
+                <span
+                  v-if="status.loadingItem === product.id"
+                  class="spinner-grow spinner-grow-sm align-baseline me-2"
+                  role="status"
+                  aria-hidden="true"
+                />
                 <span v-if="status.loadingItem === product.id">加入中…</span>
                 <span v-else>加入購物車</span>
               </button>
@@ -115,11 +179,15 @@
   </section>
   <section>
     <div class="container">
-      <h3 class="fs-2 fw-bold mb-0">您可能也會喜歡……</h3>
+      <h3 class="fs-2 fw-bold mb-0">
+        您可能也會喜歡……
+      </h3>
     </div>
-    <ProductRecommend class="pt-3 pb-5 pt-md-4 pb-md-6"
-                      :parent-products-data="productsData"
-                      v-if="productsDataGotten"/>
+    <ProductRecommend
+      v-if="productsDataGotten"
+      class="pt-3 pb-5 pt-md-4 pb-md-6"
+      :parent-products-data="productsData"
+    />
   </section>
 </template>
 
@@ -128,7 +196,11 @@ import ProductRecommend from '@/components/layouts/ProductRecommend.vue';
 import windowResizeMixin from '@/mixins/windowResizeMixin';
 
 export default {
-  inject: ['$emitter', '$filters'],
+  components: {
+    ProductRecommend,
+  },
+  mixins: [windowResizeMixin],
+  inject: ['$emitter', '$filters', '$pushMessageState'],
   props: {
     parentProductsData: {
       type: Array,
@@ -149,12 +221,26 @@ export default {
         loadingItem: '',
       },
       browserWidth: 0,
-      isfavorite: false,
-      favorities: [],
+      isFavorite: false,
+      favorites: [],
+      isLoading: true,
     };
   },
-  components: {
-    ProductRecommend,
+  watch: {
+    browserWidth() {
+      if (this.browserWidth < 768) {
+        this.infoCardHeight = this.$refs.infoCard.offsetHeight;
+      }
+    },
+  },
+  created() {
+    this.productId = this.$route.params.productId;
+    this.getFavorites();
+    this.getProduct();
+    this.getProducts();
+  },
+  updated() {
+    this.infoCardHeight = this.$refs.infoCard.offsetHeight;
   },
   methods: {
     getProduct() {
@@ -162,8 +248,14 @@ export default {
       this.$http.get(api)
         .then((res) => {
           if (res.data.success) {
-            this.product = JSON.parse(JSON.stringify(res.data.product));
+            this.product = res.data.product;
+            this.isLoading = false;
+          } else {
+            this.$pushMessageState(res, '取得單一商品');
           }
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得單一商品');
         });
     },
     getProducts() {
@@ -177,10 +269,10 @@ export default {
       });
       this.$emitter.emit('areaFromNavbar', area);
     },
-    getFavorities() {
-      this.favorities = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
-      if (this.favorities.indexOf(this.productId) !== -1) {
-        this.isfavorite = true;
+    getFavorites() {
+      this.favorites = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
+      if (this.favorites.indexOf(this.productId) !== -1) {
+        this.isFavorite = true;
       }
     },
     addCart(id) {
@@ -193,9 +285,16 @@ export default {
       this.$http.post(api, { data: productInfo })
         .then((res) => {
           if (res.data.success) {
-            this.status.loadingItem = '';
             this.$emitter.emit('addCart');
+          } else {
+            this.$pushMessageState(res, '加入購物車');
           }
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '加入購物車');
+        })
+        .finally(() => {
+          this.status.loadingItem = '';
         });
     },
     changeProductAmount(changeAmount) {
@@ -211,33 +310,16 @@ export default {
         this.productAmount = 99;
       }
     },
-    toggleFavorities() {
-      this.favorities = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
-      if (this.isfavorite === false) {
-        this.favorities.push(this.productId);
+    toggleFavorites() {
+      this.favorites = JSON.parse(localStorage.getItem('favoriteProducts')) || [];
+      if (this.isFavorite === false) {
+        this.favorites.push(this.productId);
       } else {
-        this.favorities = this.favorities.filter((item) => item !== this.productId);
+        this.favorites = this.favorites.filter((item) => item !== this.productId);
       }
-      this.isfavorite = !this.isfavorite;
-      localStorage.setItem('favoriteProducts', JSON.stringify(this.favorities));
+      this.isFavorite = !this.isFavorite;
+      localStorage.setItem('favoriteProducts', JSON.stringify(this.favorites));
     },
   },
-  watch: {
-    browserWidth() {
-      if (this.browserWidth < 768) {
-        this.infoCardHeight = this.$refs.infoCard.offsetHeight;
-      }
-    },
-  },
-  created() {
-    this.productId = this.$route.params.productId;
-    this.getFavorities();
-    this.getProduct();
-    this.getProducts();
-  },
-  updated() {
-    this.infoCardHeight = this.$refs.infoCard.offsetHeight;
-  },
-  mixins: [windowResizeMixin],
 };
 </script>

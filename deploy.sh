@@ -20,7 +20,7 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-# 在 git 在本地端預設產生的主枝名稱還是 master，沒有像 GitHub 改成 main
+# git 在本地端預設產生的主枝名稱還是 master，沒有像 GitHub 改成 main
 git push -f git@github.com:bryanchu10/non-guide.git master:gh-pages
 
 cd -

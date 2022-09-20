@@ -1,15 +1,21 @@
 <template>
-  <div class="box position-relative mb-3"
-        ref="meltTransTextBox">
+  <div
+    ref="meltTransTextBox"
+    class="box position-relative mb-3"
+  >
     <Transition name="melt">
-      <span class="text text-white fs-4 fw-bold position-absolute"
-            ref="meltTransText"
-            v-if="!wordChanged">
-        <slot name="init"/>
+      <span
+        v-if="!wordChanged"
+        ref="meltTransText"
+        class="text text-white fs-4 fw-bold position-absolute"
+      >
+        <slot name="init" />
       </span>
-      <span class="text text-white fs-4 fw-bold position-absolute"
-            v-else>
-        <slot name="final"/>
+      <span
+        v-else
+        class="text text-white fs-4 fw-bold position-absolute"
+      >
+        <slot name="final" />
       </span>
     </Transition>
   </div>
@@ -23,14 +29,14 @@ export default {
       default: false,
     },
   },
+  mounted() {
+    this.setBoxHeight();
+  },
   methods: {
     setBoxHeight() {
       const boxHeight = this.$refs.meltTransText.offsetHeight;
       this.$refs.meltTransTextBox.style.height = `${boxHeight}px`;
     },
-  },
-  mounted() {
-    this.setBoxHeight();
   },
 };
 </script>

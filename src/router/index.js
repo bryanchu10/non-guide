@@ -101,6 +101,7 @@ const routes = [
       },
     ],
   },
+  { path: '/:pathMatch(.*)*', component: HomeView },
 ];
 
 const router = createRouter({

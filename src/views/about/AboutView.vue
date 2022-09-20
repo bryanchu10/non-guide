@@ -1,12 +1,14 @@
 <template>
-  <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
-  <router-view :parent-articles-data="articlesData"
-                v-if="articlesDataGotten"
-                :key="pageKey"/>
-  <SubscribeMe/>
-  <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
-  <CartOffcanvas ref="cartOffcanvas"/>
-  <LoginModal ref="loginModal"/>
+  <UserNavbar @show-offcanvas="showCartCanvas" />
+  <router-view
+    v-if="articlesDataGotten"
+    :key="pageKey"
+    :parent-articles-data="articlesData"
+  />
+  <SubscribeMe />
+  <UserFooter @show-login-modal="showLoginModal" />
+  <CartOffcanvas ref="cartOffcanvas" />
+  <LoginModal ref="loginModal" />
 </template>
 
 <script>
@@ -17,7 +19,6 @@ import CartOffcanvas from '@/components/layouts/CartOffcanvas.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 
 export default {
-  name: 'AboutView',
   components: {
     UserNavbar,
     SubscribeMe,
@@ -25,6 +26,7 @@ export default {
     CartOffcanvas,
     LoginModal,
   },
+  inject: ['$pushMessageState'],
   data() {
     return {
       articlesData: [],
@@ -37,20 +39,27 @@ export default {
       return this.$route.path + Math.random();
     },
   },
+  created() {
+    this.getRecentArticles();
+  },
   methods: {
     getRecentArticles(page = 1) {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/articles?page=${page}`;
       this.$http.get(api)
         .then((res) => {
-          if (res.data.success) {
-            this.articlesData = [...res.data.articles];
-            this.articlesDataGotten = true;
-          }
+          this.articlesData = res.data.articles;
+          this.articlesDataGotten = true;
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得文章列表');
         });
     },
-  },
-  created() {
-    this.getRecentArticles();
+    showCartCanvas() {
+      this.$refs.cartOffcanvas.showOffcanvas();
+    },
+    showLoginModal() {
+      this.$refs.loginModal.showModal();
+    },
   },
 };
 </script>

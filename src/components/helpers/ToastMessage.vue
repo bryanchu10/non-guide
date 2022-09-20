@@ -1,15 +1,40 @@
 <template>
-  <div class="toast mb-2" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
+  <div
+    ref="toast"
+    class="toast mb-2"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
     <div class="toast-header">
-      <span :class="`bg-${msg.style}`" class="p-2 rounded me-2 d-inline-block"></span>
+      <span
+        :class="`bg-${msg.style}`"
+        class="p-2 rounded me-2 d-inline-block"
+      />
       <strong class="me-auto">{{ msg.title }}</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      />
     </div>
-    <div class="toast-body" v-if="msg.content">
-      <ul>
-        <li v-for="(item, index) in msg.content" :key="index">
-          {{ item }}
+    <div
+      v-if="msg.content || msg.status"
+      class="toast-body"
+    >
+      <ul class="mb-0">
+        <li v-if="msg.status">
+          HTTP 狀態碼：{{ msg.status }}
         </li>
+        <template v-if="msg.content">
+          <li
+            v-for="(item, index) in msgContentArr"
+            :key="index"
+          >
+            {{ item }}
+          </li>
+        </template>
       </ul>
     </div>
   </div>
@@ -18,10 +43,22 @@
 import Toast from 'bootstrap/js/dist/toast';
 
 export default {
-  name: 'ToastMessage',
-  props: [
-    'msg',
-  ],
+  props: {
+    msg: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  computed: {
+    msgContentArr() {
+      if (Array.isArray(this.msg.content)) {
+        return this.msg.content;
+      }
+      return [this.msg.content];
+    },
+  },
   mounted() {
     const toastEl = this.$refs.toast;
     const toast = new Toast(toastEl, {

@@ -1,27 +1,33 @@
 <template>
-  <UserNavbar @show-offcanvas="this.$refs.cartOffcanvas.showOffcanvas()"/>
-  <div class="position-relative"
-            :class="{ 'py-7': !productsDataGotten}">
-    <VueLoading :active="!productsDataGotten" :is-full-page="false"/>
-    <router-view v-if="productsDataGotten"
-                  :parent-products-data="productsData"
-                  :key="pageKey"/>
+  <UserNavbar @show-offcanvas="showCartCanvas" />
+  <div
+    class="position-relative"
+    :class="{ 'py-7': !productsDataGotten}"
+  >
+    <VueLoading
+      :active="!productsDataGotten"
+      :is-full-page="false"
+    />
+    <router-view
+      v-if="productsDataGotten"
+      :key="pageKey"
+      :parent-products-data="productsData"
+    />
   </div>
-  <SubscribeMe/>
-  <UserFooter @show-login-modal="this.$refs.loginModal.showModal()"/>
-  <CartOffcanvas ref="cartOffcanvas"/>
-  <LoginModal ref="loginModal"/>
+  <SubscribeMe />
+  <UserFooter @show-login-modal="showLoginModal" />
+  <CartOffcanvas ref="cartOffcanvas" />
+  <LoginModal ref="loginModal" />
 </template>
 
 <script>
-import UserNavbar from '@/components//layouts/UserNavbar.vue';
+import UserNavbar from '@/components/layouts/UserNavbar.vue';
 import SubscribeMe from '@/components/layouts/SubscribeMe.vue';
 import UserFooter from '@/components/layouts/UserFooter.vue';
 import CartOffcanvas from '@/components/layouts/CartOffcanvas.vue';
 import LoginModal from '@/components/modals/LoginModal.vue';
 
 export default {
-  name: 'ProductsView',
   components: {
     UserNavbar,
     SubscribeMe,
@@ -29,6 +35,7 @@ export default {
     CartOffcanvas,
     LoginModal,
   },
+  inject: ['$pushMessageState'],
   data() {
     return {
       productsData: [],
@@ -41,20 +48,27 @@ export default {
       return this.$route.path + Math.random();
     },
   },
+  created() {
+    this.getProducts();
+  },
   methods: {
     getProducts() {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http.get(api)
         .then((res) => {
-          if (res.data.success) {
-            this.productsData = JSON.parse(JSON.stringify(res.data.products));
-            this.productsDataGotten = true;
-          }
+          this.productsData = res.data.products;
+          this.productsDataGotten = true;
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得商品列表');
         });
     },
-  },
-  created() {
-    this.getProducts();
+    showCartCanvas() {
+      this.$refs.cartOffcanvas.showOffcanvas();
+    },
+    showLoginModal() {
+      this.$refs.loginModal.showModal();
+    },
   },
 };
 </script>
