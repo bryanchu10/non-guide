@@ -1,4 +1,7 @@
 <template>
+  <VueLoading
+    :active="isLoading"
+  />
   <section class="container mt-6 mb-4 mb-md-6">
     <div
       class="row position-relative mb-md-n6 "
@@ -52,7 +55,7 @@
                   </li>
                 </ol>
               </nav>
-              <h2 class="fs-2 fs-md-1 fw-bold lh-base mb-4">
+              <h2 class="fs-3 fs-md-4 fs-lg-2 fw-bold lh-base mb-4">
                 {{ mainArticle.title }}
               </h2>
               <p class="text-secondary text-prewrap mb-0">
@@ -89,6 +92,7 @@ export default {
       mainArticle: {},
       browserWidth: 0,
       infoCardHeight: 0,
+      isLoading: true,
     };
   },
   watch: {
@@ -124,6 +128,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.mainArticle = res.data.article;
+            this.isLoading = false;
           } else {
             this.$pushMessageState(res, '取得單一文章');
           }

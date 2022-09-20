@@ -6,11 +6,11 @@
   <section class="container mt-6 mb-5 mb-md-6">
     <div
       class="row position-relative mb-md-5"
-      :style="{ 'margin-bottom': `${infoCardHeight-12}px` }"
+      :style="{'margin-bottom': `${infoCardHeight-12}px`}"
     >
       <div
         class="col d-md-none h-lv8 bgsz-cover bgp-center position-relative"
-        :style="{ 'background-image': `url(${product.imageUrl ? product.imageUrl : ''})` }"
+        :style="{'background-image': `url(${product.imageUrl ? product.imageUrl : ''})`}"
       >
         <span
           v-if="product.price !== product.origin_price"
