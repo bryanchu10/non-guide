@@ -66,15 +66,14 @@
             <tfoot>
               <tr>
                 <td
-                  class="fs-4 fw-bold pt-3 pb-0 px-0
-                            border-top border-secondary border-bottom-0"
+                  class="fs-4 fw-bold pt-3 pb-0 px-0 border-top border-secondary border-bottom-0"
                 >
                   總計
                 </td>
                 <td
                   colspan="2"
-                  class="fs-4 fw-bold pt-3 pb-0 px-0
-                                      text-end border-top border-secondary border-bottom-0"
+                  class="fs-4 fw-bold pt-3 pb-0 px-0 text-end border-top border-secondary
+                    border-bottom-0"
                 >
                   NT${{ $filters.currency(parentOrderSummaryTotal) }}
                 </td>
@@ -120,15 +119,13 @@
       <tfoot>
         <tr>
           <td
-            class="fs-4 fw-bold pt-3 pb-0 px-0
-                      border-top border-secondary border-bottom-0"
+            class="fs-4 fw-bold pt-3 pb-0 px-0 border-top border-secondary border-bottom-0"
           >
             總計
           </td>
           <td
             colspan="2"
-            class="fs-4 fw-bold pt-3 pb-0 px-0 text-end
-                                  border-top border-secondary border-bottom-0"
+            class="fs-4 fw-bold pt-3 pb-0 px-0 text-end border-top border-secondary border-bottom-0"
           >
             NT${{ $filters.currency(parentOrderSummaryTotal) }}
           </td>
