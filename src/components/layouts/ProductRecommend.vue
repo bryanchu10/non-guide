@@ -1,61 +1,86 @@
 <template>
-  <div class="bc-carousel" :class="{ active: isGrabbing }"
-        ref="carousel"
-        @mousedown="mouseDown($event)"
-        @mouseup="mouseUp"
-        @mouseleave="mouseLeave"
-        @mousemove.prevent="mouseMove($event)"
-        @mousewheel="mouseWheel">
+  <div
+    ref="carousel"
+    class="bc-carousel"
+    :class="{active: isGrabbing}"
+    @mousedown="mouseDown($event)"
+    @mouseup="mouseUp"
+    @mouseleave="mouseLeave"
+    @mousemove.prevent="mouseMove($event)"
+    @mousewheel="mouseWheel"
+  >
+    <div
+      class="bc-carousel__pad-start"
+      :style="{width: `${carouselPadWidth}px`}"
+    />
 
-    <div class="bc-carousel__pad-start"
-        :style="{ width: carouselPadWidth + 'px' }">
-    </div>
-
-    <div class="bc-carousel__container"
-          v-for="(productList, index) in recommendProducts" :key="index">
+    <div
+      v-for="(productList, index) in recommendProducts"
+      :key="index"
+      class="bc-carousel__container"
+    >
       <div class="row gx-3 gx-sm-4">
-        <div class="col-4" v-for="product in recommendProducts[index]" :key="product.id">
-          <a href="#" class="d-block bc-carousel__container__card text-decoration-none
-                              position-relative hover-scale"
-              @click.prevent="goProduct(product.id)">
-            <img class="h-lv4 h-sm-lv3 h-lg-lv5 h-xl-lv7 h-xxl-lv9
-                        w-100 ojf-cover rounded-1 mb-2"
-                  :src="product.imageUrl" :alt="product.title">
-            <h3 class="fs-4 fw-bold text-black">{{ product.title }}</h3>
+        <div
+          v-for="product in recommendProducts[index]"
+          :key="product.id"
+          class="col-4"
+        >
+          <a
+            href="#"
+            class="d-block bc-carousel__container__card text-decoration-none position-relative
+              hover-scale"
+            @click.prevent="goProduct(product.id)"
+          >
+            <img
+              class="h-lv4 h-sm-lv3 h-lg-lv5 h-xl-lv7 h-xxl-lv9 w-100 ojf-cover rounded-1 mb-2"
+              :src="product.imageUrl"
+              :alt="product.title"
+            >
+            <h3 class="fs-5 fs-lg-4 fw-bold text-black">{{ product.title }}</h3>
             <span class="fw-bold text-bold text-black me-2">
               $NT{{ $filters.currency(product.price) }}
             </span>
-            <span v-if="product.price !== product.origin_price" class="fw-bold text-bold
-                          text-secondary text-decoration-line-through">
+            <span
+              v-if="product.price !== product.origin_price"
+              class="fw-bold text-bold text-secondary text-decoration-line-through"
+            >
               $NT{{ $filters.currency(product.origin_price) }}
             </span>
-            <span v-if="product.price !== product.origin_price"
-                  class="text-white fw-bold position-absolute top-0 end-0 py-3 pe-3">
-                  On Sale
+            <span
+              v-if="product.price !== product.origin_price"
+              class="text-white fw-bold position-absolute top-0 end-0 py-3 pe-3"
+            >
+              On Sale
             </span>
           </a>
         </div>
         <template v-if="index === 2">
           <div class="col-4">
-            <router-link to="/products/list"
-                          class="d-block bc-carousel__container__card
-                                  text-decoration-none position-relative
-                                  hover-scale">
-              <img class="h-lv4 h-sm-lv3 h-lg-lv5 h-xl-lv7 h-xxl-lv9
-                          w-100 ojf-cover filter-brightness-50 rounded-1"
-                    src="https://images.unsplash.com/photo-1568667256531-7d5ac92eaa7a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2030&q=80" alt="觀看更多...">
-              <i class="bi bi-arrow-right-circle fs-1 text-white opacity-75
-                        position-absolute start-50 top-50 translate-middle"></i>
+            <router-link
+              to="/products/list"
+              class="d-block bc-carousel__container__card text-decoration-none position-relative
+                hover-scale"
+            >
+              <img
+                class="h-lv4 h-sm-lv3 h-lg-lv5 h-xl-lv7 h-xxl-lv9 w-100 ojf-cover
+                  filter-brightness-50 rounded-1"
+                src="@/assets/images/more.jpg"
+                alt="觀看更多..."
+              >
+              <i
+                class="bi bi-arrow-right-circle fs-1 text-white opacity-75 position-absolute
+                  start-50 top-50 translate-middle"
+              />
             </router-link>
           </div>
         </template>
       </div>
     </div>
 
-    <div class="bc-carousel__pad-end"
-          :style="{ width: carouselPadWidth + 'px' }">
-    </div>
-
+    <div
+      class="bc-carousel__pad-end"
+      :style="{width: `${carouselPadWidth}px`}"
+    />
   </div>
 </template>
 
@@ -72,7 +97,7 @@ export default {
   },
   data() {
     return {
-      dragSpeend: 3, // 設定滑鼠點擊中拖曳速度
+      dragSpeed: 3, // 設定滑鼠點擊中拖曳速度
       wheelSpeed: 2, // 設定滑鼠滾輪滾動速度
       browserWidth: 0,
       clientWidth: 0,
@@ -143,6 +168,13 @@ export default {
       }
     },
   },
+  mounted() {
+    window.addEventListener('resize', this.resizeHandler);
+    this.getBrowserWidth();
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.resizeHandler);
+  },
   methods: {
     getBrowserWidth() {
       this.browserWidth = window.innerWidth;
@@ -164,7 +196,7 @@ export default {
         return;
       }
       const moveX = e.pageX - this.$refs.carousel.offsetLeft;
-      const scrollMove = (moveX - this.relativeStartX) * this.dragSpeend;
+      const scrollMove = (moveX - this.relativeStartX) * this.dragSpeed;
       this.$refs.carousel.scrollLeft = this.scrollLeftStartX - scrollMove;
     },
     mouseWheel(e) {
@@ -196,13 +228,6 @@ export default {
     resizeHandler() {
       this.getBrowserWidth();
     },
-  },
-  mounted() {
-    window.addEventListener('resize', this.resizeHandler);
-    this.getBrowserWidth();
-  },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.resizeHandler);
   },
 };
 </script>

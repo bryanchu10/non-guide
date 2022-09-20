@@ -1,43 +1,109 @@
 <template>
-  <VueLoading :active="isLoading"/>
+  <VueLoading :active="isLoading" />
   <div class="container mt-6">
     <div class="text-end">
-      <button class="btn btn-primary" type="button"
-              @click="openModal(true)">增加一篇文章</button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        @click="openModal(true)"
+      >
+        增加一篇文章
+      </button>
     </div>
     <div class="table-responsive-lg">
-      <table class="table mt-4" style="table-layout: fixed;">
+      <table
+        class="table mt-4"
+        style="table-layout: fixed;"
+      >
         <thead>
           <tr>
-            <th width="30" class="text-nowrap">#</th>
-            <th width="180" class="text-nowrap">名稱</th>
-            <th width="120" class="text-nowrap">作者</th>
-            <th width="120" class="text-nowrap">時間</th>
-            <th width="300" class="text-nowrap">概述</th>
-            <th width="80" class="text-nowrap">狀態</th>
-            <th width="120" class="text-nowrap">編輯</th>
+            <th
+              width="30"
+              class="text-nowrap"
+            >
+              #
+            </th>
+            <th
+              width="180"
+              class="text-nowrap"
+            >
+              名稱
+            </th>
+            <th
+              width="120"
+              class="text-nowrap"
+            >
+              作者
+            </th>
+            <th
+              width="120"
+              class="text-nowrap"
+            >
+              時間
+            </th>
+            <th
+              width="300"
+              class="text-nowrap"
+            >
+              概述
+            </th>
+            <th
+              width="80"
+              class="text-nowrap"
+            >
+              狀態
+            </th>
+            <th
+              width="120"
+              class="text-nowrap"
+            >
+              編輯
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="article in articles" :key="article.id"
-              class="align-middle">
+          <tr
+            v-for="article in articles"
+            :key="article.id"
+            class="align-middle"
+          >
             <td>{{ article.num }}</td>
-            <td class="text-nowrap">{{ article.title }}</td>
-            <td class="text-nowrap">{{ article.author }}</td>
+            <td class="text-nowrap">
+              {{ article.title }}
+            </td>
+            <td class="text-nowrap">
+              {{ article.author }}
+            </td>
             <td class="text-nowrap">
               {{ $dayjs.unix(article.create_at).tz('Asia/Taipei').format('YYYY-MM-DD') }}
             </td>
-            <td class="text-truncate">{{ article.description }}</td>
+            <td class="text-truncate">
+              {{ article.description }}
+            </td>
             <td class="text-nowrap">
-              <span class="text-success" v-if="article.isPublic">公開</span>
-              <span class="text-muted" v-else>未公開</span>
+              <span
+                v-if="article.isPublic"
+                class="text-success"
+              >公開</span>
+              <span
+                v-else
+                class="text-muted"
+              >未公開</span>
             </td>
             <td class="text-nowrap">
               <div class="btn-group">
-                <button class="btn btn-outline-primary btn-sm"
-                        @click="openModal(false, article)">編輯</button>
-                <button class="btn btn-outline-danger btn-sm"
-                        @click="openDelModal(article)">刪除</button>
+                <button
+                  class="btn btn-outline-primary btn-sm"
+                  @click="openModal(false, article)"
+                >
+                  編輯
+                </button>
+                <button
+                  class="btn btn-outline-danger btn-sm"
+                  @click="openDelModal(article)"
+                >
+                  刪除
+                </button>
               </div>
             </td>
           </tr>
@@ -45,10 +111,21 @@
       </table>
     </div>
   </div>
-  <PaginationComponent :pages="pagination" @emit-pages="getArticles"/>
-  <ArticleUpdateModal ref="articleUpdateModal" :article="tempArticle" :isNew="isNew"
-                      @update-article="updateArticle"/>
-  <DelModal ref="delModal" :item="tempArticle" @del-item="delArticle"/>
+  <PaginationComponent
+    :pages="pagination"
+    @emit-pages="getArticles"
+  />
+  <ArticleUpdateModal
+    ref="articleUpdateModal"
+    :article="tempArticle"
+    :is-new="isNew"
+    @update-article="updateArticle"
+  />
+  <DelModal
+    ref="delModal"
+    :item="tempArticle"
+    @del-item="delArticle"
+  />
 </template>
 
 <script>
@@ -57,6 +134,12 @@ import DelModal from '@/components/modals/DelModal.vue';
 import PaginationComponent from '@/components/layouts/PaginationComponent.vue';
 
 export default {
+  components: {
+    ArticleUpdateModal,
+    DelModal,
+    PaginationComponent,
+  },
+  inject: ['$emitter', '$filters', '$dayjs', '$pushMessageState'],
   data() {
     return {
       articles: [],
@@ -64,16 +147,14 @@ export default {
       tempArticle: {},
       isNew: false,
       isLoading: false,
+      pageTheme: '文章',
     };
-  },
-  inject: ['$emitter', '$filters', '$dayjs', 'pushMessageState'],
-  components: {
-    ArticleUpdateModal,
-    DelModal,
-    PaginationComponent,
   },
   computed: {
 
+  },
+  created() {
+    this.getArticles();
   },
   methods: {
     getArticles(page = 1) {
@@ -81,11 +162,12 @@ export default {
       this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
+          this.articles = res.data.articles;
+          this.pagination = res.data.pagination;
           this.isLoading = false;
-          if (res.data.success) {
-            this.articles = JSON.parse(JSON.stringify(res.data.articles));
-            this.pagination = { ...res.data.pagination };
-          }
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '取得文章列表');
         });
     },
     openModal(isNew, article) {
@@ -99,9 +181,9 @@ export default {
         this.isLoading = true;
         this.$http.get(api)
           .then((res) => {
-            this.isLoading = false;
             this.tempArticle = JSON.parse(JSON.stringify(article));
             this.tempArticle.content = res.data.article.content;
+            this.isLoading = false;
             this.$refs.articleUpdateModal.showModal();
           });
       }
@@ -123,7 +205,11 @@ export default {
         .then((res) => {
           this.$refs.articleUpdateModal.hideModal();
           this.getArticles();
-          this.pushMessageState(res, '更新');
+          const title = this.isNew ? `${this.pageTheme}新增` : `${this.pageTheme}更新`;
+          this.$pushMessageState(res, title);
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '更新單一文章');
         });
     },
     openDelModal(article) {
@@ -137,12 +223,12 @@ export default {
         .then((res) => {
           this.$refs.delModal.hideModal();
           this.getArticles();
-          this.pushMessageState(res, '刪除');
+          this.$pushMessageState(res, '刪除');
+        })
+        .catch((err) => {
+          this.$pushMessageState(err.response, '刪除單一文章');
         });
     },
-  },
-  created() {
-    this.getArticles();
   },
 };
 </script>

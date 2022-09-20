@@ -23,6 +23,7 @@ import App from './App.vue';
 import router from './router';
 import emitter from './methods/emitter';
 import currency from './methods/filters';
+import pushMessageState from './methods/pushMessageState';
 
 defineRule('required', required);
 defineRule('email', email);
@@ -44,6 +45,7 @@ app.use(router);
 app.provide('$emitter', emitter);
 app.provide('$filters', { currency });
 app.provide('$dayjs', dayjs);
+app.provide('$pushMessageState', pushMessageState);
 app.component('VueLoading', Loading);
 app.component('VeeForm', Form);
 app.component('VeeField', Field);

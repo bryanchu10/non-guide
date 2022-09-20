@@ -1,15 +1,23 @@
 <template>
-  <ArticleSection :parent-articles-data="parentArticlesData"/>
+  <ArticleSection :parent-articles-data="parentArticlesData" />
   <section class="container mb-5 mb-md-6">
-    <h3 class="fs-2 fw-bold mb-4">接著閱讀……</h3>
-    <a href="#" class="card mb-3 mb-md-4 border-0 shadow-s text-decoration-none hover-scale"
-        v-for="article in otherArticles" :key="article.id"
-        @click.prevent="goArticle(article.id)">
+    <h3 class="fs-2 fw-bold mb-4">
+      接著閱讀……
+    </h3>
+    <a
+      v-for="article in otherArticles"
+      :key="article.id"
+      href="#"
+      class="card mb-3 mb-md-4 border-0 shadow-s text-decoration-none hover-scale"
+      @click.prevent="goArticle(article.id)"
+    >
       <div class="row g-0">
         <div class="col-md-6">
-          <img :src="article.image"
-                class="rounded-start w-100 ojf-cover h-lv4"
-                alt="article.title">
+          <img
+            :src="article.image"
+            class="rounded-start w-100 ojf-cover h-lv4"
+            alt="article.title"
+          >
         </div>
         <div class="col-md-6">
           <div class="row justify-content-center align-items-center h-100">
@@ -30,6 +38,9 @@
 import ArticleSection from '@/components/layouts/ArticleSection.vue';
 
 export default {
+  components: {
+    ArticleSection,
+  },
   props: {
     parentArticlesData: {
       type: Array,
@@ -38,14 +49,14 @@ export default {
       },
     },
   },
-  components: {
-    ArticleSection,
-  },
   data() {
     return {
       otherArticlesNum: 2, // 調整其它文章的顯示數量
       otherArticles: [],
     };
+  },
+  created() {
+    this.getOtherArticles();
   },
   methods: {
     getOtherArticles() {
@@ -54,9 +65,6 @@ export default {
     goArticle(id) {
       this.$router.push(`/about/${id}`);
     },
-  },
-  created() {
-    this.getOtherArticles();
   },
 };
 </script>

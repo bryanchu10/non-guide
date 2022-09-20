@@ -1,35 +1,45 @@
 <template>
   <div
-    id="exampleModal"
+    id="closeEditConfirm"
     ref="modal"
     class="modal fade"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="closeEditConfirmLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header bg-danger">
-          <h5 class="modal-title text-light fw-bold">
-            <slot name="title" />
+        <div class="modal-header bg-danger text-white">
+          <h5
+            id="closeEditConfirmLabel"
+            class="modal-title"
+          >
+            圖片還在上傳當中
           </h5>
           <button
             type="button"
             class="btn-close btn-close-white"
-            data-bs-dismiss="modal"
             aria-label="Close"
+            data-bs-dismiss="modal"
           />
         </div>
-        <div class="modal-body pb-0">
-          <slot name="body" />
+        <div class="modal-body">
+          確定要結束編輯嗎？圖片可能需要重新上傳。
         </div>
-        <div class="modal-footer border-0">
+        <div class="modal-footer">
           <button
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
           >
-            關閉
+            等待上傳完成
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            @click="$emit('close-two-modal')"
+          >
+            結束編輯
           </button>
         </div>
       </div>
@@ -42,21 +52,11 @@ import modalMixin from '@/mixins/modalMixin';
 
 export default {
   mixins: [modalMixin],
+  emits: ['close-two-modal'],
   data() {
     return {
       modal: {},
     };
-  },
-  mounted() {
-    this.$refs.modal.addEventListener('hide.bs.modal', this.hideModalHandler);
-  },
-  beforeUnmount() {
-    this.$refs.modal.removeEventListener('hide.bs.modal', this.hideModalHandler);
-  },
-  methods: {
-    hideModalHandler() {
-      this.$router.push('/products/list');
-    },
   },
 };
 </script>
