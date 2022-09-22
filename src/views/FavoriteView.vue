@@ -49,13 +49,13 @@
                 :ref="setItemRef"
                 class="btn btn-outline-light btn--cart-plus rounded-circle border border-2
                   me-2"
-                @click.stop.prevent="addOne(product.id, index)"
+                @click="addOne(product.id, index)"
               >
                 <i class="bi bi-cart-plus fs-5" />
               </button>
               <button
                 class="btn btn-outline-light btn--heart rounded-circle border border-2 pb-1"
-                @click.stop.prevent="toggleFavorites(product.id)"
+                @click="toggleFavorites(product.id)"
               >
                 <i
                   class="bi fs-5"
@@ -275,7 +275,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.$pushMessageState(err.response, '加入購物車');
         });
       const el = document.createElement('div');

@@ -8,7 +8,7 @@
       :active="!productsDataGotten"
       :is-full-page="false"
     />
-    <router-view
+    <RouterView
       v-if="productsDataGotten"
       :key="pageKey"
       :parent-products-data="productsData"

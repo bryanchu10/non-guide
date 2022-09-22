@@ -1,6 +1,6 @@
 <template>
   <AdminNavbar />
-  <router-view />
+  <RouterView />
 </template>
 
 <script>

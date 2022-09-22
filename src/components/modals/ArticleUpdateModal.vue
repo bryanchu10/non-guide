@@ -261,7 +261,6 @@ export default {
           // 反而會讓使用者誤會該品項已經更新圖片了
           // （但實際上和其它欄位一樣，還要儲存該次編輯）
           // 所以只提示圖片上傳失敗的訊息
-          console.log(res);
           if (!res.data.success) {
             this.$pushMessageState(res, '圖片上傳');
           }

@@ -59,12 +59,12 @@
         </ol>
       </nav>
       <div class="col-lg-6 order-lg-2 position-relative">
-        <router-view
+        <RouterView
           v-if="$route.name === 'payment'"
           :parent-receiver-info="receiverInfo"
           :parent-receiver-message="receiverMessage"
         />
-        <router-view v-else />
+        <RouterView v-else />
       </div>
     </div>
   </div>
