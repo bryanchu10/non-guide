@@ -21,6 +21,7 @@
         <div class="col-xl-2 d-flex justify-content-xl-end">
           <button
             v-if="isLoggedIn"
+            type="button"
             class="btn btn-link link-secondary text-decoration-none align-self-end ps-0 py-2"
             @click="$router.push('/admin/products')"
           >
@@ -29,6 +30,7 @@
           </button>
           <button
             v-else
+            type="button"
             class="btn btn-link link-secondary text-decoration-none align-self-end ps-0 py-2"
             @click="$emit('show-login-modal')"
           >

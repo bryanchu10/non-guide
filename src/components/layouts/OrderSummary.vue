@@ -10,8 +10,7 @@
         class="accordion-header"
       >
         <button
-          class="accordion-button bg-transparent
-                        px-3 collapsed"
+          class="accordion-button bg-transparent px-3 collapsed"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#collapseOne"

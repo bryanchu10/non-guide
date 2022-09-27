@@ -85,12 +85,14 @@
             <td class="text-nowrap">
               <div class="btn-group">
                 <button
+                  type="button"
                   class="btn btn-outline-primary btn-sm"
                   @click="openModal(false, product)"
                 >
                   編輯
                 </button>
                 <button
+                  type="button"
                   class="btn btn-outline-danger btn-sm"
                   @click="openDelModal(product)"
                 >
