@@ -36,10 +36,11 @@
         :key="product.id"
         class="col-6"
       >
-        <a
-          href="#"
-          class="d-block text-decoration-none position-relative mb-4 hover-scale"
-          @click.prevent="goProduct(product.id)"
+        <div
+          class="text-decoration-none position-relative mb-4 hover-scale hover-pointer"
+          tabindex="0"
+          @click="goProduct(product.id)"
+          @keyup.enter="goProduct(product.id)"
         >
           <div class="mb-2 position-relative">
             <img
@@ -63,14 +64,14 @@
                 type="button"
                 class="btn btn-outline-light btn--cart-plus rounded-circle border border-2
                   me-2"
-                @click.stop.prevent="addOne(product.id, index)"
+                @click.stop="addOne(product.id, index)"
               >
                 <i class="bi bi-cart-plus fs-5" />
               </button>
               <button
                 type="button"
                 class="btn btn-outline-light btn--heart rounded-circle border border-2 pb-1"
-                @click.stop.prevent="toggleFavorites(product.id)"
+                @click.stop="toggleFavorites(product.id)"
               >
                 <i
                   class="bi fs-5"
@@ -79,7 +80,9 @@
               </button>
             </div>
           </div>
-          <h3 class="fs-6 fs-sm-5 fw-bold text-black text-truncate">{{ product.title }}</h3>
+          <h3 class="fs-6 fs-sm-5 fw-bold text-black text-truncate">
+            {{ product.title }}
+          </h3>
           <small class="fw-bold text-bold text-black me-2">
             $NT{{ $filters.currency(product.price) }}
           </small>
@@ -89,7 +92,7 @@
           >
             $NT{{ $filters.currency(product.origin_price) }}
           </small>
-        </a>
+        </div>
       </div>
     </div>
 
@@ -102,10 +105,11 @@
         :key="product.id"
         class="col-4 col-xl-3"
       >
-        <a
-          href="#"
-          class="d-block text-decoration-none mb-5 hover-scale"
-          @click.prevent="goProduct(product.id)"
+        <div
+          class="text-decoration-none mb-5 hover-scale hover-pointer"
+          tabindex="0"
+          @click="goProduct(product.id)"
+          @keyup.enter="goProduct(product.id)"
         >
           <div class="mb-2 position-relative">
             <img
@@ -129,14 +133,14 @@
                 type="button"
                 class="btn btn-outline-light btn--cart-plus rounded-circle border border-2
                   me-2"
-                @click.stop.prevent="addOne(product.id, index)"
+                @click.stop="addOne(product.id, index)"
               >
                 <i class="bi bi-cart-plus fs-5" />
               </button>
               <button
                 type="button"
                 class="btn btn-outline-light btn--heart rounded-circle border border-2 pb-1"
-                @click.stop.prevent="toggleFavorites(product.id)"
+                @click.stop="toggleFavorites(product.id)"
               >
                 <i
                   class="bi fs-5"
@@ -145,7 +149,9 @@
               </button>
             </div>
           </div>
-          <h3 class="fs-5 fs-lg-4 fw-bold text-black">{{ product.title }}</h3>
+          <h3 class="fs-5 fs-lg-4 fw-bold text-black">
+            {{ product.title }}
+          </h3>
           <span class="fw-bold text-bold text-black me-2">
             $NT{{ $filters.currency(product.price) }}
           </span>
@@ -155,7 +161,7 @@
           >
             $NT{{ $filters.currency(product.origin_price) }}
           </span>
-        </a>
+        </div>
       </div>
     </div>
   </section>
