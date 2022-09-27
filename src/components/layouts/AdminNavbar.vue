@@ -73,6 +73,7 @@
             </router-link>
           </li>
           <button
+            type="button"
             class="btn btn-outline-secondary ms-sm-auto mb-2 mb-md-0"
             @click="logOut"
           >

@@ -17,10 +17,10 @@
       >
         購物車
         <small
-          v-if="singleAmountSum"
+          v-if="cartsData.length"
           class="fs-7 fs-md-6 align-top text-primary"
         >
-          {{ singleAmountSum }}
+          {{ cartsData.length }}
         </small>
       </h2>
       <button
@@ -221,7 +221,6 @@ export default {
       cartsData: [],
       cartsTotal: 0,
       cartsFinalTotal: 0,
-      singleAmountSum: 0,
       status: {
         loadingItem: '',
       },
@@ -232,7 +231,7 @@ export default {
   },
   watch: {
     cartsData() {
-      this.$emitter.emit('cartFilled', this.singleAmountSum);
+      this.$emitter.emit('cartFilled', this.cartsData.length);
     },
     $route() {
       this.getCart();
@@ -264,13 +263,6 @@ export default {
         .then((res) => {
           this.cartsData = res.data.data.carts;
           this.cartsTotal = res.data.data.total;
-
-          let sum = 0;
-          res.data.data.carts.forEach((item) => {
-            sum += item.qty;
-          });
-          this.singleAmountSum = sum;
-
           this.cartsFinalTotal = res.data.data.final_total;
           this.status.loadingItem = '';
           this.isLoading = false;

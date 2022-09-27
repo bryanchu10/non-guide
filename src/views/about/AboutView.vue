@@ -3,7 +3,7 @@
     :active="!articlesDataGotten"
   />
   <UserNavbar @show-offcanvas="showCartCanvas" />
-  <router-view
+  <RouterView
     v-if="articlesDataGotten"
     :key="pageKey"
     :parent-articles-data="articlesData"

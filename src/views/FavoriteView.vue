@@ -47,6 +47,7 @@
             >
               <button
                 :ref="setItemRef"
+                type="button"
                 class="btn btn-outline-light btn--cart-plus rounded-circle border border-2
                   me-2"
                 @click.stop.prevent="addOne(product.id, index)"
@@ -54,6 +55,7 @@
                 <i class="bi bi-cart-plus fs-5" />
               </button>
               <button
+                type="button"
                 class="btn btn-outline-light btn--heart rounded-circle border border-2 pb-1"
                 @click.stop.prevent="toggleFavorites(product.id)"
               >
@@ -110,6 +112,7 @@
             >
               <button
                 :ref="setMasonryItemRef"
+                type="button"
                 class="btn btn-outline-light btn--cart-plus rounded-circle border border-2
                   me-2"
                 @click.stop.prevent="addOne(product.id, index)"
@@ -117,6 +120,7 @@
                 <i class="bi bi-cart-plus fs-5" />
               </button>
               <button
+                type="button"
                 class="btn btn-outline-light btn--heart rounded-circle border border-2 pb-1"
                 @click.stop.prevent="toggleFavorites(product.id)"
               >
@@ -275,7 +279,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.$pushMessageState(err.response, '加入購物車');
         });
       const el = document.createElement('div');
