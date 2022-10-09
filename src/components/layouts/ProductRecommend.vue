@@ -106,7 +106,7 @@ export default {
       isGrabbing: false,
       relativeStartX: 0, // 按下滑鼠時，游標相對於 carousel 元件左側的水平位置
       carouselLeftX: 0,
-      scrollLeftStarX: 0, // 按下滑鼠時水平滾動軸的水平位置
+      scrollLeftStartX: 0, // 按下滑鼠時水平滾動軸的水平位置
       scrollLeftBefore: 0, // 滾輪滾動前水平滾動軸的水平位置
       scrollLeftAfter: 0, // 滾輪滾動後水平滾動軸的水平位置
       toStartEdge: false,
